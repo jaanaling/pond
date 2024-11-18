@@ -37,16 +37,12 @@ flutter:
      - assets/json/
 
   fonts:
-      - family: satoshi
+      - family: Baby Bears
         fonts:
-          - asset: assets/fonts/satoshi-regular.otf
-            weight: 400
-          - asset: assets/fonts/satoshi-medium.otf
-            weight: 500
-      - family: avenir
+          - asset: assets/fonts/Baby-Bears.ttf
+
+      - family: Araside
         fonts:
-          - asset: assets/fonts/avenir-bold.ttf
-            weight: 700
-          - asset: assets/fonts/avenir-normal.ttf
-            weight: 500
+          - asset: assets/fonts/Araside.ttf
+
 
