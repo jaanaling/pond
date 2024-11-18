@@ -7,6 +7,7 @@ import 'package:flutter/foundation.dart';
 import 'package:pond_care/src/feature/pond/models/decoration.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 import 'package:pond_care/src/feature/pond/models/plant.dart';
+import 'package:pond_care/src/feature/pond/models/task.dart';
 
 class Pond {
   final String id;
@@ -16,6 +17,7 @@ class Pond {
   List<Fish> fish;
   List<Plant> plants;
   List<Decorations> decorations;
+  List<Task>? tasks;
   String groundType; // Тип грунта
   double currentOxygenLevel; // Текущий уровень кислорода
   double currentTemperature; // Текущая температура воды
@@ -28,6 +30,7 @@ class Pond {
     required this.volume,
     this.photoUrl,
     required this.fish,
+    required this.tasks,
     required this.plants,
     required this.decorations,
     required this.groundType,
@@ -440,6 +443,7 @@ class Pond {
     List<Fish>? fish,
     List<Plant>? plants,
     List<Decorations>? decorations,
+    List<Task>? tasks,
     String? groundType,
     double? currentOxygenLevel,
     double? currentTemperature,
@@ -449,6 +453,7 @@ class Pond {
     return Pond(
       id: id ?? this.id,
       name: name ?? this.name,
+      tasks: tasks ?? this.tasks,
       volume: volume ?? this.volume,
       photoUrl: photoUrl ?? this.photoUrl,
       fish: fish ?? this.fish,
@@ -467,6 +472,7 @@ class Pond {
       'id': id,
       'name': name,
       'volume': volume,
+      'tasks': tasks?.map((x) => x.toMap()).toList(),
       'photoUrl': photoUrl,
       'fish': fish.map((x) => x.toMap()).toList(),
       'plants': plants.map((x) => x.toMap()).toList(),
@@ -481,10 +487,16 @@ class Pond {
 
   factory Pond.fromMap(Map<String, dynamic> map) {
     return Pond(
-      id: map['id'] as String,
+      id: map['id'] as String? ??
+          DateTime.now().microsecondsSinceEpoch.toString(),
       name: map['name'] as String,
+      tasks: List<Task>.from(
+        (map['tasks'] as List<int>).map<Task>(
+          (x) => Task.fromMap(x as Map<String, dynamic>),
+        ),
+      ),
       volume: map['volume'] as double,
-      photoUrl: map['photoUrl'] != null ? map['photoUrl'] as String : null,
+      photoUrl: map['photoUrl'] as String?,
       fish: List<Fish>.from(
         (map['fish'] as List<int>).map<Fish>(
           (x) => Fish.fromMap(x as Map<String, dynamic>),
@@ -527,6 +539,7 @@ class Pond {
         other.volume == volume &&
         other.photoUrl == photoUrl &&
         listEquals(other.fish, fish) &&
+        listEquals(other.tasks, tasks) &&
         listEquals(other.plants, plants) &&
         listEquals(other.decorations, decorations) &&
         other.groundType == groundType &&
@@ -541,6 +554,7 @@ class Pond {
     return id.hashCode ^
         name.hashCode ^
         volume.hashCode ^
+        tasks.hashCode ^
         photoUrl.hashCode ^
         fish.hashCode ^
         plants.hashCode ^

@@ -14,11 +14,13 @@ class PondLoaded extends PondState {
   final List<Fish> fish;
   final List<Plant> plants;
   final List<Decorations> decorations;
+  final List<Task> history;
 
-  const PondLoaded(this.pond, this.fish, this.plants , this.decorations);
+
+  const PondLoaded(this.pond, this.fish, this.plants , this.decorations, this.history );
 
   @override
-  List<Object> get props => [pond, fish, plants, decorations];
+  List<Object> get props => [pond, fish, plants, decorations, history];
 }
 
 class PondLoading extends PondState {}

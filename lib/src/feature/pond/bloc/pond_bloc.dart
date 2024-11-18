@@ -5,7 +5,9 @@ import 'package:pond_care/src/feature/pond/models/decoration.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 import 'package:pond_care/src/feature/pond/models/plant.dart';
 import 'package:pond_care/src/feature/pond/models/pond.dart';
+import 'package:pond_care/src/feature/pond/models/task.dart';
 import 'package:pond_care/src/feature/pond/repository/repository.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 part 'pond_event.dart';
 part 'pond_state.dart';
@@ -18,6 +20,8 @@ class PondBloc extends Bloc<PondEvent, PondState> {
     on<UpdatePond>(_onUpdatePond);
     on<SavePond>(_onSavePond);
     on<RemovePond>(_onRemovePond);
+    on<UpdateTasks>(_onUpdateTasks);
+    on<RemoveTasks>(_onRemoveTasks);
   }
 
   Future<void> _onLoadPonds(
@@ -26,11 +30,18 @@ class PondBloc extends Bloc<PondEvent, PondState> {
   ) async {
     emit(PondLoading());
     try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
       final pond = await _repository.load();
       final fish = await _repository.loadFish();
       final plants = await _repository.loadPlants();
       final decorations = await _repository.loadDecorations();
-      emit(PondLoaded(pond, fish, plants, decorations));
+      final history = pref
+              .getStringList('history')
+              ?.map((e) => Task.fromMap(Task.fromJson(e).toMap()))
+              .toList() ??
+          [];
+
+      emit(PondLoaded(pond, fish, plants, decorations, history));
     } catch (e) {
       emit(const PondError('Failed to load pond'));
     }
@@ -53,7 +64,19 @@ class PondBloc extends Bloc<PondEvent, PondState> {
     Emitter<PondState> emit,
   ) async {
     try {
-      await _repository.save(event.pond);
+      await _repository.save(
+        event.pond.copyWith(
+          tasks: (await _repository.loadTasks())
+              .map(
+                (e) => e.copyWith(
+                  pondId: event.pond.id,
+                  dueDate:
+                      DateTime.now().add(Duration(days: e.periodicityDays)),
+                ),
+              )
+              .toList(),
+        ),
+      );
       add(LoadPond());
     } catch (e) {
       emit(const PondError('Failed to save pond'));
@@ -69,6 +92,59 @@ class PondBloc extends Bloc<PondEvent, PondState> {
       add(LoadPond());
     } catch (e) {
       emit(const PondError('Failed to remove transaction'));
+    }
+  }
+
+  Future<void> _onUpdateTasks(
+    UpdateTasks event,
+    Emitter<PondState> emit,
+  ) async {
+    try {
+      final SharedPreferences pref = await SharedPreferences.getInstance();
+      final history = (pref.getStringList('history') ?? [])
+        ..removeWhere((test) => test == event.tasks.toJson())
+        ..add(event.tasks.copyWith(pondId: event.pond.id).toJson());
+
+      pref.setStringList('history', history);
+
+      event.tasks.markAsCompleted();
+      Pond updatedPond;
+      if (event.tasks.isPeriodic) {
+        updatedPond = event.pond.copyWith(
+          tasks: [
+            ...event.pond.tasks!.where((task) => task.id != event.tasks.id),
+            event.tasks,
+          ],
+        );
+      } else {
+        updatedPond = event.pond.copyWith(
+          tasks: [
+            ...event.pond.tasks!.where((task) => task.id != event.tasks.id),
+          ],
+        );
+      }
+
+      await _repository.update(updatedPond);
+      add(LoadPond());
+    } catch (e) {
+      emit(const PondError('Failed to update tasks'));
+    }
+  }
+
+  Future<void> _onRemoveTasks(
+    RemoveTasks event,
+    Emitter<PondState> emit,
+  ) async {
+    try {
+      final updatedPond = event.pond.copyWith(
+        tasks: event.pond.tasks!
+            .where((task) => task.id != event.tasks.id)
+            .toList(),
+      );
+      await _repository.update(updatedPond);
+      add(LoadPond());
+    } catch (e) {
+      emit(const PondError('Failed to remove tasks'));
     }
   }
 }

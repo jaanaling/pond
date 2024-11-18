@@ -2,6 +2,8 @@ import 'package:pond_care/src/feature/pond/models/decoration.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 import 'package:pond_care/src/feature/pond/models/plant.dart';
 import 'package:pond_care/src/feature/pond/models/pond.dart';
+import 'package:pond_care/src/feature/pond/models/task.dart';
+
 
 import '../../../core/utils/json_loader.dart';
 
@@ -40,6 +42,14 @@ class PondRepository {
     );
   }
 
+   Future<List<Task>> loadTasks() {
+    return JsonLoader.loadData<Task>(
+      key,
+      'assets/json/tasks.json',
+      (json) => Task.fromMap(json),
+    );
+  }
+
   Future<void> update(Pond updated) async {
     return JsonLoader.modifyDataList<Pond>(
       key,
@@ -60,7 +70,7 @@ class PondRepository {
       key,
       item,
       () async => await load(),
-      (item) => item.toMap(),
+      (item) => item.copyWith().toMap(),
     );
   }
 

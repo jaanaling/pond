@@ -1,15 +1,92 @@
+import 'dart:convert';
+
 class Task {
   final String id;
   final String title;
-  final DateTime dueDate;
-  final bool isCompleted;
+  final DateTime? dueDate;
+  final DateTime? finishDate;
   final bool isPeriodic;
+  final int periodicityDays; // Количество дней для периодичности
+  final String? pondId;
 
   Task({
     required this.id,
     required this.title,
     required this.dueDate,
-    this.isCompleted = false,
-    this.isPeriodic = false,
+    required this.finishDate,
+    required this.isPeriodic,
+    required this.periodicityDays, // Добавлено поле
+    required this.pondId,
   });
+
+  Task copyWith({
+    String? id,
+    String? title,
+    DateTime? dueDate,
+    DateTime? finishDate,
+    bool? isPeriodic,
+    int? periodicityDays,
+    String? pondId,
+  }) {
+    return Task(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      dueDate: dueDate ?? this.dueDate,
+      finishDate: finishDate ?? this.finishDate,
+      isPeriodic: isPeriodic ?? this.isPeriodic,
+      periodicityDays: periodicityDays ?? this.periodicityDays,
+      pondId: pondId ?? this.pondId,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'id': id,
+      'title': title,
+      'dueDate': dueDate?.millisecondsSinceEpoch,
+      'finishDate': finishDate?.millisecondsSinceEpoch,
+      'isPeriodic': isPeriodic,
+      'periodicityDays': periodicityDays, // Сохраняем количество дней
+      'pondId': pondId,
+    };
+  }
+
+  factory Task.fromMap(Map<String, dynamic> map) {
+    return Task(
+      id: map['id'] as String,
+      title: map['title'] as String,
+      dueDate: map['dueDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['dueDate'] as int)
+          : null,
+      finishDate: map['finishDate'] != null
+          ? DateTime.fromMillisecondsSinceEpoch(map['finishDate'] as int)
+          : null,
+      isPeriodic: map['isPeriodic'] as bool,
+      periodicityDays: map['periodicityDays'] as int, // Читаем значение
+      pondId: map['pondId'] as String?,
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Task.fromJson(String source) =>
+      Task.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  // Метод обновления даты для периодических задач
+  Task markAsCompleted() {
+    if (!isPeriodic || periodicityDays <= 0) {
+      return copyWith(finishDate: DateTime.now());
+    }
+
+    DateTime newDueDate = dueDate!.add(Duration(days: periodicityDays));
+    return copyWith(
+      finishDate: DateTime.now(),
+      dueDate: newDueDate,
+    );
+  }
+
+  @override
+  String toString() {
+    return 'Task(id: $id, title: $title, dueDate: $dueDate, finishDate: $finishDate, isPeriodic: $isPeriodic, periodicityDays: $periodicityDays, pondId: $pondId)';
+  }
 }
