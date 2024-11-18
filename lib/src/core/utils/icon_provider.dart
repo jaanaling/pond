@@ -1,4 +1,12 @@
 enum IconProvider {
+  alert(imageName: 'alert.png'),
+  error(imageName: 'error.png'),
+  fish(imageName: 'fish.png'),
+  back(imageName: 'back.png'),
+  logo(imageName: 'logo.png'),
+  splash(imageName: 'splash.png'),
+  decor(imageName: 'decor.png'),
+  noPhoto(imageName: "no_photo.png"),
 
   unknown(imageName: '');
 
