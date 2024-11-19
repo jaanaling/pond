@@ -2,11 +2,23 @@ enum RouteValue {
   splash(
     path: '/',
   ),
+  home(
+    path: '/home',
+  ),
   addPond(
     path: 'addPond',
   ),
-  home(
-    path: '/home',
+  details(
+    path: 'details',
+  ),
+  tasks(
+    path: 'tasks',
+  ),
+  history(
+    path: 'history',
+  ),
+  items(
+    path: 'items',
   ),
   unknown(
     path: '',

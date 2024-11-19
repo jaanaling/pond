@@ -31,7 +31,7 @@ class AppRoot extends StatelessWidget {
             ),
           ),
         ),
-        localizationsDelegates: [
+        localizationsDelegates: const [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
