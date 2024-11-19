@@ -1,4 +1,6 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 import 'package:go_router/go_router.dart';
 
@@ -15,14 +17,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
-
-
-
   @override
   void initState() {
     super.initState();
     startLoading(context);
-
   }
 
   Future<void> startLoading(BuildContext context) async {
@@ -42,7 +40,6 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   void dispose() {
-
     super.dispose();
   }
 
@@ -54,13 +51,23 @@ class _SplashScreenState extends State<SplashScreen>
       alignment: Alignment.center,
       children: [
         Positioned.fill(
-          child: AppIcon(asset: IconProvider.splash.buildImageUrl(), width: double.infinity, fit: BoxFit.cover,),
+          child: AppIcon(
+            asset: IconProvider.splash.buildImageUrl(),
+            width: double.infinity,
+            fit: BoxFit.cover,
+          ),
         ),
         Positioned(
-          top: height * 0.17,
+          top: height * 0.122,
           child: AppIcon(asset: IconProvider.logo.buildImageUrl()),
         ),
-        
+        Positioned(
+          bottom: height * 0.122,
+          child: const SpinKitFadingCircle(
+            color: Colors.white,
+            size: 98,
+          ),
+        ),
       ],
     );
   }

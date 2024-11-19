@@ -1,10 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-
-import '../src/feature/splash/presentation/screens/splash_screen.dart';
-import 'root_navigation_screen.dart';
-import 'route_value.dart';
-
+import 'package:pond_care/src/feature/pond/presentation/add_pond_screen.dart';
+import 'package:pond_care/src/feature/pond/presentation/home_screen.dart';
+import 'package:pond_care/src/feature/splash/presentation/screens/splash_screen.dart';
+import 'package:pond_care/routes/root_navigation_screen.dart';
+import 'package:pond_care/routes/route_value.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
@@ -27,7 +28,30 @@ GoRouter buildGoRouter = GoRouter(
         );
       },
       branches: [
-
+        StatefulShellBranch(
+          navigatorKey: _homeNavigatorKey,
+          routes: <RouteBase>[
+            GoRoute(
+              parentNavigatorKey: _homeNavigatorKey,
+              path: RouteValue.home.path,
+              builder: (context, state) => HomeScreen(key: UniqueKey()),
+              routes: <RouteBase>[
+                GoRoute(
+                  parentNavigatorKey: _homeNavigatorKey,
+                  path: RouteValue.addPond.path,
+                  builder: (context, state) {
+                    return ColoredBox(
+                      color: Colors.white,
+                      child: AddPondScreen(
+                        key: UniqueKey(),
+                      ),
+                    );
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ],
     ),
     ShellRoute(

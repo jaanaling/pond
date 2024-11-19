@@ -28,9 +28,13 @@ class _RootNavigationScreenState extends State<RootNavigationScreen> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: AssetImage(
-                    IconProvider.back.buildImageUrl(),
+                    IconProvider.splash.buildImageUrl(),
                   ),
                   fit: BoxFit.cover,
+                  colorFilter: ColorFilter.mode(
+                    Colors.black.withOpacity(0.68),
+                    BlendMode.darken,
+                  ),
                 ),
               ),
             ),

@@ -22,7 +22,7 @@ class AppRoot extends StatelessWidget {
       child: CupertinoApp.router(
         theme: const CupertinoThemeData(
           brightness: Brightness.light,
-          primaryColor: Colors.white,
+          primaryColor: Color(0xFF1895FB),
           textTheme: CupertinoTextThemeData(
             textStyle: TextStyle(
               fontFamily: 'satoshi',
