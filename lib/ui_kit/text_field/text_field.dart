@@ -4,12 +4,14 @@ import 'package:flutter/material.dart';
 class AppTextField extends StatelessWidget {
   final double width;
   final double? height;
+  final TextInputType textInputType;
   final TextEditingController controller;
+  final Function(String)? onChanged;
   const AppTextField(
       {super.key,
       this.width = double.infinity,
       this.height,
-      required this.controller});
+      required this.controller, this.textInputType = TextInputType.text, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +21,7 @@ class AppTextField extends StatelessWidget {
       decoration: BoxDecoration(
         border: Border.all(
           width: 5,
-          color: Color(0xFFD8F0FD),
+          color: const Color(0xFFD8F0FD),
         ),
         borderRadius: BorderRadius.circular(39),
         boxShadow: [
@@ -33,8 +35,11 @@ class AppTextField extends StatelessWidget {
       ),
       child: CupertinoTextField(
         controller: controller,
+        onChanged: onChanged,
+        keyboardType: textInputType,
         textAlignVertical: TextAlignVertical.center,
-        style: TextStyle(
+        textAlign: TextAlign.center,
+        style: const TextStyle(
             color: Colors.white,
             fontSize: 26,
             fontFamily: 'Araside',
@@ -43,26 +48,27 @@ class AppTextField extends StatelessWidget {
             shadows: [
               Shadow(
                   // bottomLeft
-                  offset: Offset(-1.5, -1.5),
+                  offset: Offset(-1, -1),
                   color: Color(0xFF3256A2)),
               Shadow(
                   // bottomRight
-                  offset: Offset(1.5, -1.5),
+                  offset: Offset(1, -1),
                   color: Color(0xFF3256A2)),
               Shadow(
                   // topRight
-                  offset: Offset(1.5, 1.5),
+                  offset: Offset(1, 1),
                   color: Color(0xFF3256A2)),
               Shadow(
                   // topLeft
-                  offset: Offset(-1.5, 1.5),
+                  offset: Offset(-1, 1),
                   color: Color(0xFF3256A2)),
             ]),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
             begin: Alignment(0.00, -1.00),
             end: Alignment(0, 1),
-            colors: [Color(0xFFABC7EC), Color(0xFF9DBFE6)],
+            colors: [Color(0xFF88A2D7), Color(0xFFABC7EC), Color(0xFF9DBFE6), Color(0xFF88A2D7),],
+              stops: [0.0005, 0.15, 0.995, 1.0]
           ),
           borderRadius: BorderRadius.circular(39),
         ),

@@ -2,13 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pond_care/src/feature/pond/presentation/add_pond_screen.dart';
+
 import 'package:pond_care/src/feature/pond/presentation/history_screen.dart';
+
+import 'package:pond_care/src/feature/pond/presentation/choose_screen.dart';
+
 import 'package:pond_care/src/feature/pond/presentation/home_screen.dart';
-import 'package:pond_care/src/feature/pond/presentation/items_screen.dart';
 import 'package:pond_care/src/feature/pond/presentation/task_screen.dart';
 import 'package:pond_care/src/feature/splash/presentation/screens/splash_screen.dart';
 import 'package:pond_care/routes/root_navigation_screen.dart';
 import 'package:pond_care/routes/route_value.dart';
+
+import '../src/feature/pond/models/pond.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
@@ -37,93 +42,82 @@ GoRouter buildGoRouter = GoRouter(
               builder: (context, state) => HomeScreen(key: UniqueKey()),
               routes: <RouteBase>[
                 GoRoute(
-                    parentNavigatorKey: _homeNavigatorKey,
-                    path: RouteValue.addPond.path,
-                    builder: (context, state) {
-                      return ColoredBox(
-                        color: Colors.white,
-                        child: AddPondScreen(
+                  parentNavigatorKey: _homeNavigatorKey,
+                  path: RouteValue.addPond.path,
+                  builder: (context, state) {
+                    return AddPondScreen(
+                      key: UniqueKey(),
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      parentNavigatorKey: _homeNavigatorKey,
+                      path: RouteValue.choose.path,
+                      builder: (context, state) {
+                        final type = state.extra! as ChooseType;
+                        return ChooseScreen(
+                          type: type,
                           key: UniqueKey(),
-                        ),
-                      );
-                    },
-                    routes: [
-                      GoRoute(
-                        parentNavigatorKey: _homeNavigatorKey,
-                        path: RouteValue.items.path,
-                        builder: (context, state) {
-                          return ColoredBox(
-                            color: Colors.white,
-                            child: ItemsScreen(
-                              key: UniqueKey(),
-                            ),
-                          );
-                        },
-                      ),
-                    ]),
+                        );
+                      },
+                    ),
+                  ],
+                ),
                 GoRoute(
-                    parentNavigatorKey: _homeNavigatorKey,
-                    path: RouteValue.details.path,
-                    builder: (context, state) {
-                      return ColoredBox(
-                        color: Colors.white,
-                        child: AddPondScreen(
+                  parentNavigatorKey: _homeNavigatorKey,
+                  path: RouteValue.details.path,
+                  builder: (context, state) {
+                    return AddPondScreen(
+                      key: UniqueKey(),
+                    );
+                  },
+                  routes: [
+                    GoRoute(
+                      parentNavigatorKey: _homeNavigatorKey,
+                      path: RouteValue.tasks.path,
+                      builder: (context, state) {
+                        final pond = state.extra! as Pond;
+                        return TaskScreen(
                           key: UniqueKey(),
+                          pond: pond,
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          parentNavigatorKey: _homeNavigatorKey,
+                          path: RouteValue.history.path,
+                          builder: (context, state) {
+                            return HistoryScreen(
+                              key: UniqueKey(),
+                            );
+                          },
                         ),
-                      );
-                    },
-                    routes: [
-                      GoRoute(
+                      ],
+                    ),
+                    GoRoute(
+                      parentNavigatorKey: _homeNavigatorKey,
+                      path: RouteValue.addPond.path,
+                      builder: (context, state) {
+                        return AddPondScreen(
+                          key: UniqueKey(),
+                        );
+                      },
+                      routes: [
+                        GoRoute(
                           parentNavigatorKey: _homeNavigatorKey,
-                          path: RouteValue.tasks.path,
+                          path: RouteValue.choose.path,
                           builder: (context, state) {
-                            return ColoredBox(
-                              color: Colors.white,
-                              child: TaskScreen(
-                                key: UniqueKey(),
-                              ),
+                            final type = state.extra! as ChooseType;
+                            return ChooseScreen(
+                              type: type,
+                              key: UniqueKey(),
                             );
                           },
-                          routes: [
-                            GoRoute(
-                              parentNavigatorKey: _homeNavigatorKey,
-                              path: RouteValue.history.path,
-                              builder: (context, state) {
-                                return ColoredBox(
-                                  color: Colors.white,
-                                  child: HistoryScreen(
-                                    key: UniqueKey(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ]),
-                      GoRoute(
-                          parentNavigatorKey: _homeNavigatorKey,
-                          path: RouteValue.addPond.path,
-                          builder: (context, state) {
-                            return ColoredBox(
-                              color: Colors.white,
-                              child: AddPondScreen(
-                                key: UniqueKey(),
-                              ),
-                            );
-                          },
-                          routes: [
-                            GoRoute(
-                              parentNavigatorKey: _homeNavigatorKey,
-                              path: RouteValue.items.path,
-                              builder: (context, state) {
-                                return ColoredBox(
-                                  color: Colors.white,
-                                  child: ItemsScreen(
-                                    key: UniqueKey(),
-                                  ),
-                                );
-                              },
-                            ),
-                          ]),
-                    ]),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ],
             ),
           ],
