@@ -52,7 +52,7 @@
   },
   {
     "id": "4",
-    "name": "Rock Formation",
+    "name": "Rock\nFormation",
     "imageUrl": "assets/images/Rock Formation.png",
     "size": "large",
     "material": "stone",
@@ -86,7 +86,7 @@
   },
   {
     "id": "6",
-    "name": "Small Floating House",
+    "name": "Small Floating\nHouse",
     "imageUrl": "assets/images/Small Floating House.png",
     "size": "small",
     "material": "wood",
@@ -103,7 +103,7 @@
   },
   {
     "id": "7",
-    "name": "Floating Planter",
+    "name": "Floating\nPlanter",
     "imageUrl": "assets/images/Floating Planter.png",
     "size": "medium",
     "material": "plastic",
@@ -120,7 +120,7 @@
   },
   {
     "id": "8",
-    "name": "Fish Feeding Station",
+    "name": "Fish Feeding\nStation",
     "imageUrl": "assets/images/Fish Feeding Station.png",
     "size": "small",
     "material": "plastic",
@@ -137,7 +137,7 @@
   },
   {
     "id": "9",
-    "name": "Floating Decorative Balls",
+    "name": "Floating\nDecorative Balls",
     "imageUrl": "assets/images/Floating Decorative Balls.png",
     "size": "small",
     "material": "plastic",
@@ -171,7 +171,7 @@
   },
   {
     "id": "11",
-    "name": "Water Lily Pad",
+    "name": "Water Lily\nPad",
     "imageUrl": "assets/images/Water Lily Pad.png",
     "size": "medium",
     "material": "natural",
@@ -188,7 +188,7 @@
   },
   {
     "id": "12",
-    "name": "Wooden Dock",
+    "name": "Wooden\nDock",
     "imageUrl": "assets/images/Wooden Dock.png",
     "size": "large",
     "material": "wood",
@@ -205,7 +205,7 @@
   },
   {
     "id": "13",
-    "name": "Water Plant Decorations",
+    "name": "Water Plant\nDecorations",
     "imageUrl": "assets/images/Water Plant Decorations.png",
     "size": "medium",
     "material": "natural",
@@ -222,7 +222,7 @@
   },
   {
     "id": "14",
-    "name": "Small Floating Island",
+    "name": "Small Floating\nIsland",
     "imageUrl": "assets/images/Small Floating Island.png",
     "size": "small",
     "material": "natural",
@@ -239,7 +239,7 @@
   },
   {
     "id": "15",
-    "name": "Floating Lantern",
+    "name": "Floating\nLantern",
     "imageUrl": "assets/images/Floating Lantern.png",
     "size": "small",
     "material": "plastic",
@@ -256,7 +256,7 @@
   },
   {
     "id": "16",
-    "name": "Pebble Fountain",
+    "name": "Pebble\nFountain",
     "imageUrl": "assets/images/Pebble Fountain.png",
     "size": "medium",
     "material": "stone",
@@ -290,7 +290,7 @@
   },
   {
     "id": "18",
-    "name": "Mini Dock for Boats",
+    "name": "Mini Dock\nfor Boats",
     "imageUrl": "assets/images/Mini Dock for Boats.png",
     "size": "small",
     "material": "wood",
@@ -307,7 +307,7 @@
   },
   {
     "id": "19",
-    "name": "Floating Decorative Stones",
+    "name": "Floating\nDecorative\nStones",
     "imageUrl": "assets/images/Floating Decorative Stones.png",
     "size": "medium",
     "material": "stone",
@@ -324,7 +324,7 @@
   },
   {
     "id": "20",
-    "name": "Water Mirror",
+    "name": "Water\nMirror",
     "imageUrl": "assets/images/Water Mirror.png",
     "size": "large",
     "material": "stone",

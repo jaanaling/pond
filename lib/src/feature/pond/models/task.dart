@@ -6,7 +6,7 @@ class Task {
   final DateTime? dueDate;
   final DateTime? finishDate;
   final bool isPeriodic;
-  final int periodicityDays; // Количество дней для периодичности
+  final int periodicityDays;
   final String? pondId;
 
   Task({
@@ -72,7 +72,6 @@ class Task {
   factory Task.fromJson(String source) =>
       Task.fromMap(json.decode(source) as Map<String, dynamic>);
 
-  // Метод обновления даты для периодических задач
   Task markAsCompleted() {
     if (!isPeriodic || periodicityDays <= 0) {
       return copyWith(finishDate: DateTime.now());

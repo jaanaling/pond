@@ -8,6 +8,15 @@ import 'package:pond_care/ui_kit/app_button/app_button.dart';
 import 'package:pond_care/ui_kit/text_field/text_field.dart';
 import 'package:pond_care/routes/route_value.dart';
 
+import 'package:pond_care/src/feature/pond/models/fish.dart';
+
+import '../models/decoration.dart';
+import '../models/plant.dart';
+
+List<Fish> selectedFish = [];
+List<Decorations> selectedDecorations = [];
+List<Plant> selectedPlants = [];
+
 class AddPondScreen extends StatefulWidget {
   const AddPondScreen({super.key});
 

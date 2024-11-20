@@ -46,7 +46,7 @@
   },
   {
     "id": "3",
-    "name": "Water Hyacinth",
+    "name": "Water\nHyacinth",
     "imageUrl": "assets/images/Water Hyacinth.png",
     "size": "medium",
     "providesOxygen": true,
@@ -69,7 +69,7 @@
   },
   {
     "id": "4",
-    "name": "Water Lettuce",
+    "name": "Water\nLettuce",
     "imageUrl": "assets/images/Water Lettuce.png",
     "size": "small",
     "providesOxygen": true,
@@ -92,7 +92,7 @@
   },
   {
     "id": "5",
-    "name": "Water Buttercup",
+    "name": "Water\nButtercup",
     "imageUrl": "assets/images/Water Buttercup.png",
     "size": "small",
     "providesOxygen": true,
@@ -116,7 +116,7 @@
   ,
   {
     "id": "6",
-    "name": "Pickerel Weed",
+    "name": "Pickerel\nWeed",
     "imageUrl": "assets/images/Pickerel Weed.png",
     "size": "medium",
     "providesOxygen": true,
@@ -208,7 +208,7 @@
   },
   {
     "id": "10",
-    "name": "Floating Heart",
+    "name": "Floating\nHeart",
     "imageUrl": "assets/images/Floating Heart.png",
     "size": "small",
     "providesOxygen": true,
@@ -231,7 +231,7 @@
   },
   {
     "id": "11",
-    "name": "Water Mint",
+    "name": "Water\nMint",
     "imageUrl": "assets/images/Water Mint.png",
     "size": "medium",
     "providesOxygen": true,
@@ -277,7 +277,7 @@
   },
     {
       "id": "13",
-      "name": "Sweet Flag",
+      "name": "Sweet\nFlag",
       "imageUrl": "assets/images/Sweet Flag.png",
       "size": "medium",
       "providesOxygen": true,
@@ -346,7 +346,7 @@
     },
     {
       "id": "16",
-      "name": "Japanese Blood Grass",
+      "name": "Japanese\nBlood Grass",
       "imageUrl": "assets/images/Japanese Blood Grass.png",
       "size": "medium",
       "providesOxygen": true,
@@ -369,7 +369,7 @@
     },
     {
       "id": "17",
-      "name": "Water Clover",
+      "name": "Water\nClover",
       "imageUrl": "assets/images/Water Clover.png",
       "size": "small",
       "providesOxygen": true,
@@ -392,7 +392,7 @@
     },
     {
       "id": "18",
-      "name": "Water Fern",
+      "name": "Water\nFern",
       "imageUrl": "assets/images/Water Fern.png",
       "size": "medium",
       "providesOxygen": true,

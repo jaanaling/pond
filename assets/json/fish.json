@@ -80,7 +80,7 @@
   },
   {
     "id": "4",
-    "name": "Rainbow Trout",
+    "name": "Rainbow\nTrout",
     "imageUrl": "assets/images/Rainbow Trout.png",
     "size": "large",
     "isCompatible": false,
@@ -207,7 +207,7 @@
   },
   {
     "id": "9",
-    "name": "Crucian Carp",
+    "name": "Crucian\nCarp",
     "imageUrl": "assets/images/Crucian Carp.png",
     "size": "medium",
     "isCompatible": true,
@@ -315,7 +315,7 @@
   },
   {
     "id": "13",
-    "name": "Rosy Red Minnow",
+    "name": "Rosy Red\nMinnow",
     "imageUrl": "assets/images/Rosy Red Minnow.png",
     "size": "small",
     "isCompatible": true,
@@ -341,7 +341,7 @@
   },
   {
     "id": "14",
-    "name": "Zebra Danio",
+    "name": "Zebra\nDanio",
     "imageUrl": "assets/images/Zebra Danio.png",
     "size": "small",
     "isCompatible": true,
@@ -393,7 +393,7 @@
   },
   {
     "id": "16",
-    "name": "Pumpkinseed Sunfish",
+    "name": "Pumpkinseed\nSunfish",
     "imageUrl": "assets/images/Pumpkinseed Sunfish.png",
     "size": "medium",
     "isCompatible": false,
@@ -418,7 +418,7 @@
   },
   {
     "id": "17",
-    "name": "Largemouth Bass",
+    "name": "Largemouth\nBass",
     "imageUrl": "assets/images/Largemouth Bass.png",
     "size": "large",
     "isCompatible": false,
