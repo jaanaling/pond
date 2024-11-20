@@ -18,7 +18,7 @@ class HistoryScreen extends StatelessWidget {
           hasBackIcon: true,
         ),
         SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 35),
+          padding: const EdgeInsets.symmetric(horizontal: 13),
           child: SafeArea(
             child: BlocBuilder<PondBloc, PondState>(
               builder: (context, state) {
@@ -31,42 +31,86 @@ class HistoryScreen extends StatelessWidget {
                     separatorBuilder: (context, index) => const Gap(11),
                     itemBuilder: (context, index) {
                       return AppButton(
+                        radius: 17,
                         width: double.infinity,
                         color: ButtonColors.blue,
-                        widget: Column(
-                          children: [
-                            Text(
-                              "${tasks[index].title} in pond ${state.pond.firstWhere((element) => element.id == tasks[index].pondId)}",
-                            ),
-                            const Gap(4),
-                            Row(
-                              children: [
-                                Column(
-                                  children: [
-                                    Text(
-                                      'Doned in ${tasks[index].finishDate}',
-                                    ),
-                                    if (tasks[index]
-                                            .dueDate!
-                                            .difference(DateTime.now())
-                                            .inDays <
-                                        0)
-                                      const Text('Pending')
-                                    else
-                                      Row(
-                                        children: [
-                                          Image.asset(
-                                            IconProvider.error.buildImageUrl(),
-                                          ),
-                                          const Gap(4),
-                                          const Text('Overdue'),
-                                        ],
-                                      ),
-                                  ],
+                        widget: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                "${tasks[index].title} in pond ${tasks[index].pondId}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 23,
+                                  fontFamily: 'Araside',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const Gap(4),
+                              Row(
+                                children: [
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Doned in ${tasks[index].finishDate}',
+                                        style: TextStyle(
+                                          color: Colors.white.withOpacity(0.6),
+                                          fontSize: 27,
+                                          fontFamily: 'Baby Bears',
+                                          fontWeight: FontWeight.w400,
+                                          height: 0,
+                                        ),
+                                      ),
+                                      if (tasks[index]
+                                              .dueDate!
+                                              .difference(
+                                                  tasks[index].finishDate ??
+                                                      DateTime.now())
+                                              .inDays >
+                                          0)
+                                        Text(
+                                          'Pending',
+                                          style: TextStyle(
+                                            color:
+                                                Colors.white.withOpacity(0.6),
+                                            fontSize: 27,
+                                            fontFamily: 'Baby Bears',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                          ),
+                                        )
+                                      else
+                                        Row(
+                                          children: [
+                                            Image.asset(
+                                              IconProvider.error
+                                                  .buildImageUrl(),
+                                              width: 34,
+                                              height: 34,
+                                            ),
+                                            const Gap(4),
+                                            const Text(
+                                              'Overdue',
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 27,
+                                                fontFamily: 'Baby Bears',
+                                                fontWeight: FontWeight.w400,
+                                                height: 0,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },

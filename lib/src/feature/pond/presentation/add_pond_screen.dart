@@ -1,10 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pond_care/src/core/utils/app_icon.dart';
 import 'package:pond_care/src/core/utils/icon_provider.dart';
+import 'package:pond_care/src/feature/pond/bloc/pond_bloc.dart';
+import 'package:pond_care/src/feature/pond/models/pond.dart';
 import 'package:pond_care/src/feature/pond/presentation/choose_screen.dart';
 import 'package:pond_care/ui_kit/app_button/app_button.dart';
 import 'package:pond_care/ui_kit/text_field/text_field.dart';
@@ -45,6 +48,54 @@ class _AddPondScreenState extends State<AddPondScreen> {
     }
   }
 
+  Map<String, int> calculateMaxElementsBySize() {
+    final int maxUnits = (_volumeController.text.isNotEmpty
+            ? double.parse(_volumeController.text) / 50
+            : 0)
+        .floor(); // Каждая условная единица требует 50 литров воды
+    final int currentFishUnits =
+        selectedFish.fold(0, (sum, f) => sum + _getSizeUnit(f.size));
+    final int currentPlantUnits =
+        selectedPlants.fold(0, (sum, p) => sum + _getSizeUnit(p.size));
+    final int currentDecorationUnits =
+        selectedDecorations.fold(0, (sum, d) => sum + _getSizeUnit(d.size));
+
+    return {
+      'maxUnits': maxUnits,
+      'currentFishUnits': currentFishUnits,
+      'currentPlantUnits': currentPlantUnits,
+      'currentDecorationUnits': currentDecorationUnits,
+    };
+  }
+
+  int _getSizeUnit(String size) {
+    switch (size) {
+      case 'small':
+        return 1;
+      case 'medium':
+        return 2;
+      case 'large':
+        return 3;
+      default:
+        return 1;
+    }
+  }
+
+  String? checkElementCountsBySize() {
+    String? warnings;
+    final Map<String, int> sizeData = calculateMaxElementsBySize();
+
+    if (sizeData['currentFishUnits']! +
+            sizeData['currentPlantUnits']! +
+            sizeData['currentDecorationUnits']! >
+        sizeData['maxUnits']!) {
+      warnings = 'The elements take up too much space. '
+          'Is used ${sizeData['currentFishUnits']! + sizeData['currentPlantUnits']! + sizeData['currentDecorationUnits']!} from the available ${sizeData['maxUnits']} conventional units.';
+    }
+
+    return warnings;
+  }
+
   @override
   Widget build(BuildContext context) {
     final bool isIpad = MediaQuery.of(context).size.shortestSide >= 600;
@@ -76,7 +127,7 @@ class _AddPondScreenState extends State<AddPondScreen> {
                                 ))
                             : ClipRRect(
                                 borderRadius:
-                                    BorderRadius.all(Radius.circular(17)),
+                                    const BorderRadius.all(Radius.circular(17)),
                                 child: Image.file(
                                   File(_image!),
                                   width: 100,
@@ -204,6 +255,22 @@ class _AddPondScreenState extends State<AddPondScreen> {
               width: MediaQuery.of(context).size.width * 0.39,
               textInputType: TextInputType.number,
             ),
+            if (checkElementCountsBySize() != null) const Gap(24),
+            if (checkElementCountsBySize() != null)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Image.asset(
+                      IconProvider.error.buildImageUrl(),
+                      width: 62,
+                      height: 62,
+                    ),
+                    const Gap(4),
+                    Expanded(child: Text(checkElementCountsBySize()!)),
+                  ],
+                ),
+              ),
             const Gap(24),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -242,7 +309,25 @@ class _AddPondScreenState extends State<AddPondScreen> {
             Padding(
               padding: const EdgeInsets.only(top: 48),
               child: AppButton(
-                onPressed: () {},
+                onPressed: () {
+                  context.read<PondBloc>().add(SavePond(Pond(
+                        id: DateTime.now().microsecondsSinceEpoch.toString(),
+                        photoUrl: _image,
+                        name: _nameController.text,
+                        volume: _volumeController.text.isNotEmpty
+                            ? double.parse(_volumeController.text)
+                            : 0,
+                        fish: selectedFish,
+                        tasks: [],
+                        plants: selectedPlants,
+                        decorations: selectedDecorations,
+                      )));
+                  selectedFish.clear();
+                  selectedDecorations.clear();
+                  selectedPlants.clear();
+
+                  context.pop();
+                },
                 color: ButtonColors.green,
                 widget: const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),

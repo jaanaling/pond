@@ -45,7 +45,6 @@ class PondBloc extends Bloc<PondEvent, PondState> {
               ?.map((e) => Task.fromMap(Task.fromJson(e).toMap()))
               .toList() ??
           [];
-          
 
       emit(PondLoaded(pond, fish, plants, decorations, history));
     } catch (e) {
@@ -71,21 +70,24 @@ class PondBloc extends Bloc<PondEvent, PondState> {
     Emitter<PondState> emit,
   ) async {
     try {
-      await _repository.save(
-        event.pond.copyWith(
-          tasks: (await _repository.loadTasks())
-              .map(
-                (e) => e.copyWith(
-                  pondId: event.pond.id,
-                  dueDate:
-                      DateTime.now().add(Duration(days: e.periodicityDays)),
-                ),
-              )
-              .toList(),
-        ),
+      final tasks = await _repository.loadTasks();
+      logger.d(tasks);
+      final pond = event.pond.copyWith(
+        tasks: tasks
+            .map(
+              (e) => e.copyWith(
+                pondId: event.pond.name,
+                dueDate: DateTime.now().add(Duration(days: e.periodicityDays)),
+              ),
+            )
+            .toList(),
       );
+      logger.d(pond);
+      await _repository.save(pond);
+
       add(LoadPond());
     } catch (e) {
+      logger.e(e);
       emit(const PondError('Failed to save pond'));
     }
   }
@@ -110,7 +112,12 @@ class PondBloc extends Bloc<PondEvent, PondState> {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       final history = (pref.getStringList('history') ?? [])
         ..removeWhere((test) => test == event.tasks.toJson())
-        ..add(event.tasks.copyWith(pondId: event.pond.id).toJson());
+        ..add(event.tasks
+            .copyWith(
+              id: DateTime.now().microsecondsSinceEpoch.toString(),
+              finishDate: DateTime.now(),
+            )
+            .toJson());
 
       pref.setStringList('history', history);
 

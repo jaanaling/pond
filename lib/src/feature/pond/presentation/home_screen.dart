@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pond_care/routes/go_router_config.dart';
 import 'package:pond_care/routes/route_value.dart';
@@ -20,6 +22,26 @@ class HomeScreen extends StatelessWidget {
       children: [
         AppBarWidget(
           title: 'All Ponds',
+        ),
+        BlocBuilder<PondBloc, PondState>(
+          builder: (context, state) {
+            if (state is PondLoaded) {
+              return ListView.separated(
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (BuildContext context, int index) => AppButton(
+                      onPressed: () => context.push(
+                            "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
+                            extra: state.pond[index],
+                          ),
+                      color: ButtonColors.red,
+                      widget: Text(state.pond[index].name)),
+                  separatorBuilder: (BuildContext context, int index) => Gap(3),
+                  itemCount: state.pond.length);
+            } else {
+              return CircularProgressIndicator();
+            }
+          },
         ),
         Spacer(),
         Padding(

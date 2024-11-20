@@ -3,6 +3,7 @@ import 'dart:collection';
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:pond_care/src/core/utils/log.dart';
 
 import 'package:pond_care/src/feature/pond/models/decoration.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
@@ -19,7 +20,6 @@ class Pond {
   List<Decorations> decorations;
   List<Task>? tasks;
 
-  double currentOxygenLevel; // Текущий уровень кислорода
   double pollutionLevel; // Уровень загрязнения воды
 
   Pond({
@@ -31,9 +31,6 @@ class Pond {
     required this.tasks,
     required this.plants,
     required this.decorations,
-
-    required this.currentOxygenLevel,
-
     this.pollutionLevel = 0.0,
   });
 
@@ -79,7 +76,6 @@ class Pond {
 
   /// Метод для проверки совместимости конкретного растения с текущими условиями пруда
   bool checkPlantCompatibilityWith(Plant plant) {
-
     if (pollutionLevel > 50.0 && plant.sensitiveToPollution) {
       return false; // Растение чувствительно к загрязнению воды
     }
@@ -130,7 +126,6 @@ class Pond {
   /// Метод для проверки совместимости растений с текущим состоянием пруда
   bool checkPlantCompatibility() {
     for (final plant in plants) {
-      
       if (pollutionLevel > 50.0 && plant.sensitiveToPollution) {
         return false; // Растение чувствительно к загрязнению воды
       }
@@ -165,7 +160,7 @@ class Pond {
       oxygenProvided += p.oxygenOutput;
     }
 
-    return (currentOxygenLevel + oxygenProvided) >= totalOxygenNeeded;
+    return oxygenProvided >= totalOxygenNeeded;
   }
 
   /// Метод для проверки совместимости всех элементов в пруду
@@ -292,9 +287,8 @@ class Pond {
     // Добавляем рекомендации по грунту
     final String recommendedGround = calculateRecommendedGroundType();
 
-      recommendations['Ground Type'] =
-          'Рекомендуемый тип грунта: $recommendedGround.';
-
+    recommendations['Ground Type'] =
+        'Рекомендуемый тип грунта: $recommendedGround.';
 
     // Проверяем зоны плавания
     if (!checkSwimmingZones()) {
@@ -304,10 +298,9 @@ class Pond {
 
     // Добавляем рекомендации по мощности насоса
     final double recommendedPumpPower = calculatePumpPower();
- 
-      recommendations['Pump Power'] =
-          'Рекомендуемая мощность насоса: ${recommendedPumpPower.toStringAsFixed(1)}.';
 
+    recommendations['Pump Power'] =
+        'Рекомендуемая мощность насоса: ${recommendedPumpPower.toStringAsFixed(1)}.';
 
     // Добавляем рекомендации по очистке воды
     if (pollutionLevel > 50.0) {
@@ -361,7 +354,6 @@ class Pond {
     return requiredPumpPower;
   }
 
-
   /// Расчёт рекомендуемого типа грунта
   String calculateRecommendedGroundType() {
     final Map<String, int> groundPreferences = {
@@ -412,56 +404,53 @@ class Pond {
       fish: fish ?? this.fish,
       plants: plants ?? this.plants,
       decorations: decorations ?? this.decorations,
-      currentOxygenLevel: currentOxygenLevel ?? this.currentOxygenLevel,
       pollutionLevel: pollutionLevel ?? this.pollutionLevel,
     );
   }
 
   Map<String, dynamic> toMap() {
+
     return <String, dynamic>{
       'id': id,
       'name': name,
       'volume': volume,
       'tasks': tasks?.map((x) => x.toMap()).toList(),
       'photoUrl': photoUrl,
-      'fish': fish.map((x) => x.toMap()).toList(),
+      'fish': fish.map((x) => x.toMap()).toList() ,
       'plants': plants.map((x) => x.toMap()).toList(),
       'decorations': decorations.map((x) => x.toMap()).toList(),
-
-      'currentOxygenLevel': currentOxygenLevel,
       'pollutionLevel': pollutionLevel,
     };
   }
 
   factory Pond.fromMap(Map<String, dynamic> map) {
+    logger.e('Incoming map: $map');
     return Pond(
       id: map['id'] as String? ??
           DateTime.now().microsecondsSinceEpoch.toString(),
       name: map['name'] as String,
       tasks: List<Task>.from(
-        (map['tasks'] as List<int>).map<Task>(
+        (map['tasks'] as List<dynamic>).map<Task>(
           (x) => Task.fromMap(x as Map<String, dynamic>),
         ),
       ),
       volume: map['volume'] as double,
       photoUrl: map['photoUrl'] as String?,
       fish: List<Fish>.from(
-        (map['fish'] as List<int>).map<Fish>(
+        (map['fish'] as List<dynamic>).map<Fish>(
           (x) => Fish.fromMap(x as Map<String, dynamic>),
         ),
       ),
       plants: List<Plant>.from(
-        (map['plants'] as List<int>).map<Plant>(
+        (map['plants'] as List<dynamic>).map<Plant>(
           (x) => Plant.fromMap(x as Map<String, dynamic>),
         ),
       ),
       decorations: List<Decorations>.from(
-        (map['decorations'] as List<int>).map<Decorations>(
+        (map['decorations'] as List<dynamic>).map<Decorations>(
           (x) => Decorations.fromMap(x as Map<String, dynamic>),
         ),
       ),
-
-      currentOxygenLevel: map['currentOxygenLevel'] as double,
       pollutionLevel: map['pollutionLevel'] as double,
     );
   }
@@ -473,7 +462,7 @@ class Pond {
 
   @override
   String toString() {
-    return 'Pond(id: $id, name: $name, volume: $volume, photoUrl: $photoUrl, fish: $fish, plants: $plants, decorations: $decorations, currentOxygenLevel: $currentOxygenLevel, pollutionLevel: $pollutionLevel)';
+    return 'Pond(id: $id, name: $name, volume: $volume, photoUrl: $photoUrl, fish: $fish, plants: $plants, decorations: $decorations,  pollutionLevel: $pollutionLevel)';
   }
 
   @override
@@ -488,8 +477,6 @@ class Pond {
         listEquals(other.tasks, tasks) &&
         listEquals(other.plants, plants) &&
         listEquals(other.decorations, decorations) &&
-        other.currentOxygenLevel == currentOxygenLevel &&
-
         other.pollutionLevel == pollutionLevel;
   }
 
@@ -503,8 +490,6 @@ class Pond {
         fish.hashCode ^
         plants.hashCode ^
         decorations.hashCode ^
-        currentOxygenLevel.hashCode ^
-
         pollutionLevel.hashCode;
   }
 }
