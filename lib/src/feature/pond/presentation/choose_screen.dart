@@ -488,11 +488,10 @@ class ElementWidget extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AppButton(
-          width: MediaQuery.of(context).size.width * 0.25,
           color: ButtonColors.red,
           onPressed: () => Navigator.of(context).pop(),
           widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: const Text(
               'Close',
               textAlign: TextAlign.center,
@@ -508,14 +507,13 @@ class ElementWidget extends StatelessWidget {
         ),
         const Gap(16),
         AppButton(
-          width: MediaQuery.of(context).size.width * 0.4,
           color: ButtonColors.lightBlue,
           onPressed: () {
             onSelectionChange();
             Navigator.of(context).pop();
           },
           widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
             child: Text(
               !isSelected ? 'Select' : 'Unselect',
               textAlign: TextAlign.center,

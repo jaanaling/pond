@@ -10,7 +10,10 @@ enum IconProvider {
   back(imageName: 'back.png'),
   photo(imageName: 'photo.png'),
   add(imageName: 'add.png'),
-
+  masqot1(imageName: 'masqot1.webp'),
+  masqot2(imageName: 'masqot2.webp'),
+  masqot3(imageName: 'masqot3.webp'),
+  masqot4(imageName: 'masqot4.webp'),
   unknown(imageName: '');
 
   const IconProvider({

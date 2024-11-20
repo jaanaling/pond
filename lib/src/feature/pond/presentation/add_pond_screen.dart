@@ -15,6 +15,7 @@ import 'package:pond_care/routes/route_value.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:pond_care/src/feature/pond/models/fish.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../models/decoration.dart';
 import '../models/plant.dart';
@@ -34,6 +35,7 @@ class AddPondScreen extends StatefulWidget {
 class _AddPondScreenState extends State<AddPondScreen> {
   final _nameController = TextEditingController();
   final _volumeController = TextEditingController();
+  late bool isFirstTime;
   String? _image;
 
   final ImagePicker _picker = ImagePicker(); // Экземпляр ImagePicker
@@ -104,10 +106,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
             sizeData['currentDecorationUnits']! >
         sizeData['maxUnits']!) {
       warnings = 'The elements take up too much space. '
-          'Is used ${sizeData['currentFishUnits']! + sizeData['currentPlantUnits']! + sizeData['currentDecorationUnits']!} from the available ${sizeData['maxUnits']} conventional units.';
+          'Try expanding the pond size or removing elements from it.';
     }
 
-    return warnings;
+    return _volumeController.text.isNotEmpty ? warnings : null;
   }
 
   @override
@@ -282,7 +284,11 @@ class _AddPondScreenState extends State<AddPondScreen> {
                       height: 62,
                     ),
                     const Gap(4),
-                    Expanded(child: Text(checkElementCountsBySize()!)),
+                    Expanded(
+                        child: Text(
+                      checkElementCountsBySize()!,
+                      style: TextStyle(fontFamily: 'Baby Bears'),
+                    )),
                   ],
                 ),
               ),
@@ -335,10 +341,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
                               volume: _volumeController.text.isNotEmpty
                                   ? double.parse(_volumeController.text)
                                   : 0,
-                              fish: selectedFish,
-                              tasks: widget.pond!.tasks,
-                              plants: selectedPlants,
-                              decorations: selectedDecorations,
+                              fish: [...selectedFish],
+                              tasks: [...?widget.pond!.tasks],
+                              plants: [...selectedPlants],
+                              decorations: [...selectedDecorations],
                             ),
                           ),
                         );
@@ -354,14 +360,15 @@ class _AddPondScreenState extends State<AddPondScreen> {
                               volume: _volumeController.text.isNotEmpty
                                   ? double.parse(_volumeController.text)
                                   : 0,
-                              fish: selectedFish,
+                              fish: [...selectedFish],
                               tasks: [],
-                              plants: selectedPlants,
-                              decorations: selectedDecorations,
+                              plants: [...selectedPlants],
+                              decorations: [...selectedDecorations],
                             ),
                           ),
                         );
                   }
+
                   selectedFish.clear();
                   selectedDecorations.clear();
                   selectedPlants.clear();
@@ -369,10 +376,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
                   context.pop();
                 },
                 color: ButtonColors.green,
-                widget:  Padding(
+                widget: Padding(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
                   child: Text(
-                  widget.pond != null ? 'Update Pond' :  'Add Pond',
+                    widget.pond != null ? 'Update Pond' : 'Add Pond',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 31,

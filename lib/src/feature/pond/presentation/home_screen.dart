@@ -133,6 +133,7 @@ class PondItem extends StatelessWidget {
                       width: MediaQuery.of(context).size.width - 188,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           pond.name,
                           textAlign: TextAlign.left,
@@ -150,6 +151,7 @@ class PondItem extends StatelessWidget {
                       width: MediaQuery.of(context).size.width - 188,
                       child: FittedBox(
                         fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
                         child: Text(
                           'Pond volume: ${pond.volume}',
                           textAlign: TextAlign.left,
