@@ -1,3 +1,4 @@
+import 'package:advertising_id/advertising_id.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -25,16 +26,8 @@ class _SplashScreenState extends State<SplashScreen>
 
   Future<void> startLoading(BuildContext context) async {
     await Future.delayed(const Duration(milliseconds: 1000));
-    //
-    // // final adId = await AdvertisingId.id(true);
-    // // FirebaseMessaging instance = FirebaseMessaging.instance;
-    // // final settings =
-    // //     await instance.requestPermission(alert: true, badge: true, sound: true);
-    // // if (settings.authorizationStatus != AuthorizationStatus.authorized) {
-    // //   SharedPreferences.getInstance()
-    // //       .then((prefs) => prefs.setBool('notificationsEnabled', false));
-    // // }
-    //
+
+    final adId = await AdvertisingId.id(true);
     context.go(RouteValue.home.path);
   }
 

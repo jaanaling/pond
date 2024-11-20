@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -113,6 +114,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
     return _volumeController.text.isNotEmpty ? warnings : null;
   }
 
+  bool isTextError = false;
+  bool isValueError = false;
+  bool isFishError = false;
+
   @override
   Widget build(BuildContext context) {
     final bool isIpad = MediaQuery.of(context).size.shortestSide >= 600;
@@ -154,7 +159,7 @@ class _AddPondScreenState extends State<AddPondScreen> {
                                       File(_image!),
                                       width: 100,
                                       height: 100,
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     ),
                                   ),
                           ),
@@ -338,6 +343,39 @@ class _AddPondScreenState extends State<AddPondScreen> {
                   padding: const EdgeInsets.only(top: 48),
                   child: AppButton(
                     onPressed: () {
+                      if (_nameController.text.isEmpty) {
+                        setState(() {
+                          isTextError = true;
+                        });
+                      } else {
+                        setState(() {
+                          isTextError = false;
+                        });
+                      }
+
+                      if (_volumeController.text.isEmpty) {
+                        setState(() {
+                          isValueError = true;
+                        });
+                      } else {
+                        setState(() {
+                          isValueError = false;
+                        });
+                      }
+                      if (selectedFish.isEmpty) {
+                        setState(() {
+                          isFishError = true;
+                        });
+                      } else {
+                        setState(() {
+                          isFishError = false;
+                        });
+                      }
+
+                      if (isTextError || isValueError || isFishError) {
+                        return;
+                      }
+
                       if (widget.pond != null) {
                         context.read<PondBloc>().add(
                               UpdatePond(
@@ -399,105 +437,113 @@ class _AddPondScreenState extends State<AddPondScreen> {
                     ),
                   ),
                 ),
+                const Gap(24),
+                if (isTextError)
+                  Text("Pond Name can't be empty",
+                      style: TextStyle(
+                          fontFamily: 'Baby Bears',
+                          color: CupertinoColors.systemRed)),
+                const Gap(8),
+                if (isValueError)
+                  Text("Pond Volume can't be empty",
+                      style: TextStyle(
+                          fontFamily: 'Baby Bears',
+                          color: CupertinoColors.systemRed)),
+                const Gap(8),
+                if (isFishError)
+                  Text("You must choose at least one fish",
+                      style: TextStyle(
+                          fontFamily: 'Baby Bears',
+                          color: CupertinoColors.systemRed))
               ],
             ),
           ),
         ),
         if (widget.pond != null ? !isEditScreenLoaded : !isCreateScreenLoaded)
-          Stack(
-            alignment: Alignment.topCenter,
-            children: [
-              Positioned.fill(
-                child: Container(
-                  color: Colors.black.withOpacity(0.6799999833106995),
-                ),
+          Stack(alignment: Alignment.topCenter, children: [
+            Positioned.fill(
+              child: Container(
+                color: Colors.black.withOpacity(0.6799999833106995),
               ),
-              SafeArea(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 22),
-                  child: Column(
-                    children: [
-                      Gap(MediaQuery.of(context).size.height * 0.147 -
-                          MediaQuery.of(context).padding.top),
-                      Text(
-                        widget.pond == null
-                            ? 'WELCOME TO YOUR POND CREATION!'
-                            : 'LET’S EDIT YOUR POND!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 33,
-                          fontFamily: 'Araside',
-                          fontWeight: FontWeight.w400,
-                        ),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 22),
+                child: Column(
+                  children: [
+                    Gap(MediaQuery.of(context).size.height * 0.147 -
+                        MediaQuery.of(context).padding.top),
+                    Text(
+                      widget.pond == null
+                          ? 'WELCOME TO YOUR POND CREATION!'
+                          : 'LET’S EDIT YOUR POND!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 33,
+                        fontFamily: 'Araside',
+                        fontWeight: FontWeight.w400,
                       ),
-                      Gap(10),
-                      Text(
-                        widget.pond == null
-                            ? 'Here, you can set up your pond by providing a name, volume, and select fish, plants, and decorations!'
-                            : 'You can change the pond name, volume, and update the fish, plants, and decorations here!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 27,
-                          fontFamily: 'Baby Bears',
-                          fontWeight: FontWeight.w400,
-                        ),
+                    ),
+                    Gap(10),
+                    Text(
+                      widget.pond == null
+                          ? 'Here, you can set up your pond by providing a name, volume, and select fish, plants, and decorations!'
+                          : 'You can change the pond name, volume, and update the fish, plants, and decorations here!',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 27,
+                        fontFamily: 'Baby Bears',
+                        fontWeight: FontWeight.w400,
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
-              Positioned(
-                bottom: -(MediaQuery.of(context).size.height * 0.108),
-                child: AppIcon(
-                  asset: widget.pond == null
-                      ? IconProvider.masqot1.buildImageUrl()
-                      : IconProvider.masqot3.buildImageUrl(),
-                  width: MediaQuery.of(context).size.width * 0.986,
-                  height: MediaQuery.of(context).size.height * 0.73,
-                ),
+            ),
+            Positioned(
+              bottom: -(MediaQuery.of(context).size.height * 0.108),
+              child: AppIcon(
+                asset: widget.pond == null
+                    ? IconProvider.masqot1.buildImageUrl()
+                    : IconProvider.masqot3.buildImageUrl(),
+                width: MediaQuery.of(context).size.width * 0.986,
+                height: MediaQuery.of(context).size.height * 0.73,
               ),
-              Positioned(
-                bottom: 0,
-                child: Padding(
-                  padding: EdgeInsets.only(bottom: 104),
-                  child: AppButton(
-                    onPressed: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      prefs.setBool(
-                        widget.pond == null ? 'createScreen' : 'edit',
-                        true,
-                      );
+            ),
+            Positioned(
+              bottom: 0,
+              child: Padding(
+                padding: EdgeInsets.only(bottom: 104),
+                child: AppButton(
+                  onPressed: () async {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setBool('recommendationScreen', true);
 
-                      setState(() {
-                        if (widget.pond == null) {
-                          isCreateScreenLoaded = true;
-                        } else {
-                          isEditScreenLoaded = true;
-                        }
-                      });
-                    },
-                    color: ButtonColors.green,
-                    widget: Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 54),
-                      child: Text(
-                        'Got It!',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 31,
-                          fontFamily: 'Araside',
-                          fontWeight: FontWeight.w400,
-                          height: 0,
-                        ),
+                    setState(() {
+                      isRecommendationScreenLoaded = true;
+                    });
+                  },
+                  color: ButtonColors.green,
+                  widget: Padding(
+                    padding:
+                    EdgeInsets.symmetric(vertical: 20, horizontal: 54),
+                    child: Text(
+                      'Got It!',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 31,
+                        fontFamily: 'Araside',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
                       ),
                     ),
                   ),
                 ),
               ),
-            ],
-          )
+            ),
+          ]),
       ],
     );
   }

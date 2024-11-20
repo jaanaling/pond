@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -45,27 +49,35 @@ class _DetailsScreenState extends State<DetailsScreen> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.symmetric(
-                                      horizontal: 11),
-                                  child: Stack(
-                                    children: [
-                                      AppButton(
-                                        color: ButtonColors.green,
-                                        radius: 17,
-                                        widget: SizedBox(
-                                          width: 125,
-                                          height: 117,
-                                          child: Center(
-                                            child: AppIcon(
-                                              asset: IconProvider.photo
-                                                  .buildImageUrl(),
-                                              width: 66,
-                                              fit: BoxFit.fitWidth,
+                                    horizontal: 11,
+                                  ),
+                                  child: pond.photoUrl == null
+                                      ? AppButton(
+                                          color: ButtonColors.green,
+                                          radius: 17,
+                                          widget: SizedBox(
+                                            width: 125,
+                                            height: 117,
+                                            child: Center(
+                                              child: AppIcon(
+                                                asset: IconProvider.photo
+                                                    .buildImageUrl(),
+                                                width: 66,
+                                                fit: BoxFit.fitWidth,
+                                              ),
                                             ),
                                           ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(17),
+                                          child: Image.file(
+                                            File(pond.photoUrl!),
+                                            width: 125,
+                                            height: 117,
+                                            fit: BoxFit.cover,
+                                          ),
                                         ),
-                                      ),
-                                    ],
-                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(right: 11),
@@ -82,7 +94,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           alignment: Alignment.centerLeft,
                                           child: Text(
                                             pond.name,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 25,
                                               fontFamily: 'Araside',
@@ -102,7 +114,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           child: Text(
                                             'Pond volume: ${pond.volume} l.',
                                             textAlign: TextAlign.left,
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 25,
                                               fontFamily: 'Baby Bears',
@@ -114,7 +126,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       ),
                                       Text(
                                         'Active Tasks: ${pond.tasks?.length ?? 0}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
                                           fontFamily: 'Baby Bears',
@@ -124,7 +136,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       ),
                                       Text(
                                         'Overdue Tasks: ${pond.tasks?.where((task) => task.dueDate != null && task.dueDate!.isBefore(DateTime.now())).length ?? 0}',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                           color: Colors.white,
                                           fontSize: 25,
                                           fontFamily: 'Baby Bears',
@@ -137,7 +149,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ],
                             ),
-                            Gap(16),
+                            const Gap(16),
                             Row(
                               children: [
                                 AppButton(
@@ -154,10 +166,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                 ),
-                                Gap(16),
+                                const Gap(16),
                                 Text(
-                                  '${pond.fish.length.toString()} fishs',
-                                  style: TextStyle(
+                                  '${pond.fish.length.toString()} fish',
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
                                     fontFamily: 'Baby Bears',
@@ -167,7 +179,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ],
                             ),
-                            Gap(16),
+                            const Gap(16),
                             Row(
                               children: [
                                 AppButton(
@@ -184,11 +196,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                 ),
-                                Gap(16),
+                                const Gap(16),
                                 Text(
                                   pond.decorations.length.toString() +
                                       ' decorations',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
                                     fontFamily: 'Baby Bears',
@@ -198,13 +210,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ],
                             ),
-                            Gap(16),
+                            const Gap(16),
                             Row(
                               children: [
-                                AppButton(
+                                const AppButton(
                                   color: ButtonColors.green,
                                   widget: Padding(
-                                    padding: const EdgeInsets.symmetric(
+                                    padding: EdgeInsets.symmetric(
                                       horizontal: 12,
                                       vertical: 8,
                                     ),
@@ -215,10 +227,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     ),
                                   ),
                                 ),
-                                Gap(16),
+                                const Gap(16),
                                 Text(
                                   pond.plants.length.toString() + ' plants',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     color: Colors.white,
                                     fontSize: 25,
                                     fontFamily: 'Baby Bears',
@@ -228,13 +240,14 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ),
                               ],
                             ),
-                            Gap(16),
+                            const Gap(16),
                             ListView.separated(
                               itemCount:
                                   pond.getRecommendations().entries.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) => Gap(16),
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (context, index) =>
+                                  const Gap(16),
                               itemBuilder: (context, index) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -243,7 +256,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     width: 50,
                                     height: 50,
                                   ),
-                                  Gap(16),
+                                  const Gap(16),
                                   Expanded(
                                     child: Text(
                                       pond
@@ -251,7 +264,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           .entries
                                           .elementAt(index)
                                           .value,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
                                         fontFamily: 'Baby Bears',
@@ -263,12 +276,13 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                 ],
                               ),
                             ),
-                            Gap(16),
+                            const Gap(16),
                             ListView.separated(
                               itemCount: pond.getErrors().entries.length,
                               shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) => Gap(16),
+                              physics: const NeverScrollableScrollPhysics(),
+                              separatorBuilder: (context, index) =>
+                                  const Gap(16),
                               itemBuilder: (context, index) => Row(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -277,7 +291,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                     width: 50,
                                     height: 50,
                                   ),
-                                  Gap(16),
+                                  const Gap(16),
                                   Expanded(
                                     child: Text(
                                       pond
@@ -285,7 +299,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                           .entries
                                           .elementAt(index)
                                           .value,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 25,
                                         fontFamily: 'Baby Bears',
@@ -308,59 +322,78 @@ class _DetailsScreenState extends State<DetailsScreen> {
                                       "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.addPond.path}",
                                       extra: pond,
                                     ),
-                                    widget: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 11, horizontal: 16),
-                                      child: Text(
-                                        'Edit Pond',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 23,
-                                          fontFamily: 'Araside',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
+                                    widget: SizedBox(
+                                      width: 213,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 11,
+                                            horizontal: 16,
+                                          ),
+                                          child: Text(
+                                            'Edit Pond',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 23,
+                                              fontFamily: 'Araside',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Gap(16),
+                                  const Gap(16),
                                   AppButton(
                                     color: ButtonColors.blue,
                                     onPressed: () => context.push(
                                       "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
                                       extra: pond,
                                     ),
-                                    widget: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 11, horizontal: 16),
-                                      child: Text(
-                                        'View Tasks',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 23,
-                                          fontFamily: 'Araside',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
+                                    widget: SizedBox(
+                                      width: 213,
+                                      child: Center(
+                                        child: const Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 11,
+                                          ),
+                                          child: Text(
+                                            'View Tasks',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 23,
+                                              fontFamily: 'Araside',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  Gap(16),
+                                  const Gap(16),
                                   AppButton(
                                     color: ButtonColors.red,
                                     onPressed: () =>
                                         showDialog(context, pond: pond),
-                                    widget: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 11, horizontal: 16),
-                                      child: Text(
-                                        'Delete Pond',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 23,
-                                          fontFamily: 'Araside',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
+                                    widget: SizedBox(
+                                      width: 213,
+                                      child: Center(
+                                        child: Padding(
+                                          padding: EdgeInsets.symmetric(
+                                            vertical: 11,
+                                          ),
+                                          child: Text(
+                                            'Delete Pond',
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 23,
+                                              fontFamily: 'Araside',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
@@ -373,7 +406,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                   ),
-                  AppBarWidget(
+                  const AppBarWidget(
                     title: 'Pond Details',
                     hasBackIcon: true,
                   ),
@@ -393,9 +426,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 22),
                         child: Column(
                           children: [
-                            Gap(MediaQuery.of(context).size.height * 0.147 -
-                                MediaQuery.of(context).padding.top),
-                            Text(
+                            Gap(
+                              MediaQuery.of(context).size.height * 0.147 -
+                                  MediaQuery.of(context).padding.top,
+                            ),
+                            const Text(
                               'WELCOME TO YOUR POND OVERVIEW!',
                               textAlign: TextAlign.center,
                               style: TextStyle(
@@ -420,7 +455,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                     Positioned(
                       bottom: 0,
                       child: Padding(
-                        padding: EdgeInsets.only(bottom: 104),
+                        padding: const EdgeInsets.only(bottom: 104),
                         child: AppButton(
                           onPressed: () async {
                             final prefs = await SharedPreferences.getInstance();
@@ -431,9 +466,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                             });
                           },
                           color: ButtonColors.green,
-                          widget: Padding(
+                          widget: const Padding(
                             padding: EdgeInsets.symmetric(
-                                vertical: 20, horizontal: 54),
+                              vertical: 20,
+                              horizontal: 54,
+                            ),
                             child: Text(
                               'Got It!',
                               style: TextStyle(
@@ -449,11 +486,11 @@ class _DetailsScreenState extends State<DetailsScreen> {
                       ),
                     ),
                   ],
-                )
+                ),
             ],
           );
         }
-        return CircularProgressIndicator();
+        return const CircularProgressIndicator();
       },
     );
   }
@@ -512,9 +549,9 @@ class _DetailsScreenState extends State<DetailsScreen> {
           width: MediaQuery.of(context).size.width * 0.25,
           color: ButtonColors.blue,
           onPressed: () => Navigator.of(context).pop(),
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
-            child: const Text(
+          widget: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
+            child: Text(
               'Close',
               textAlign: TextAlign.center,
               style: TextStyle(
@@ -536,12 +573,12 @@ class _DetailsScreenState extends State<DetailsScreen> {
             Navigator.of(context).pop();
             context.pop();
           },
-          widget: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 12),
+          widget: const Padding(
+            padding: EdgeInsets.symmetric(vertical: 12),
             child: Text(
               'Delete',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 18,
                 fontFamily: 'Araside',
