@@ -18,10 +18,12 @@ class AppBarWidget extends StatelessWidget {
       children: [
         AppIcon(
           asset: IconProvider.appBar.buildImageUrl(),
-          width: double.infinity,
-          fit: BoxFit.fitWidth,
+          width: MediaQuery.of(context).size.width,
+          height: 114+MediaQuery.of(context).padding.top,
+          fit: BoxFit.fill,
         ),
         if (hasBackIcon)
+
           Positioned(
             top: 6 + MediaQuery.of(context).padding.top,
             left: 10,

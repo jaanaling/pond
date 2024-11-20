@@ -22,9 +22,13 @@ class ChooseScreen extends StatefulWidget {
 
 class _ChooseScreenState extends State<ChooseScreen> {
   List<Object> _sortedList = [];
+  bool isShowAll = true;
 
   @override
   Widget build(BuildContext context) {
+    final bool isIpad = MediaQuery.of(context).size.shortestSide >= 600;
+    final width = MediaQuery.of(context).size.width;
+
     return Stack(
       alignment: Alignment.topCenter,
       children: [
@@ -32,79 +36,231 @@ class _ChooseScreenState extends State<ChooseScreen> {
           child: BlocBuilder<PondBloc, PondState>(
             builder: (context, state) {
               if (state is PondLoaded) {
-                if(_sortedList.isEmpty){
+                if (_sortedList.isEmpty) {
                   _sortedList = (widget.type == ChooseType.decorations
                       ? state.decorations
                       : widget.type == ChooseType.fish
-                      ? state.fish
-                      : state.plants)
+                          ? state.fish
+                          : state.plants)
                     ..sort((a, b) {
                       final aSelected = isSelected(
                         item: a,
                         type: widget.type,
-                      ) ? 1 : 0;
+                      )
+                          ? 1
+                          : 0;
                       final bSelected = isSelected(
                         item: b,
                         type: widget.type,
-                      ) ? 1 : 0;
+                      )
+                          ? 1
+                          : 0;
                       return bSelected - aSelected;
                     });
+                }
+                List<Object> list = _sortedList;
+                if (!isShowAll) {
+                  list = widget.type == ChooseType.fish
+                      ? getRecommendedFish(
+                          selectedFish, _sortedList as List<Fish>)
+                      : widget.type == ChooseType.decorations
+                          ? getRecommendedDecorations(selectedFish,
+                              selectedPlants, _sortedList as List<Decorations>)
+                          : getRecommendedPlants(
+                              selectedPlants, _sortedList as List<Plant>);
                 }
 
                 return Column(
                   children: [
-                    const Gap(150),
+                    const Gap(160),
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 23),
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: double.infinity,
+                              height: 38,
+                              decoration: ShapeDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.topCenter,
+                                  end: Alignment.bottomCenter,
+                                  colors: [
+                                    Colors.black.withOpacity(0.5),
+                                    Colors.black.withOpacity(0.39),
+                                  ],
+                                  stops: const [0.5, 1.0],
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(19),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              left: 0,
+                              child: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 1000),
+                                child: SelectedOptionWidget(
+                                  onPressed: () {
+                                    setState(() {
+                                      isShowAll = !isShowAll;
+                                    });
+                                  },
+                                  isSelected: isShowAll,
+                                  width: width * 0.358,
+                                  child: Text(
+                                    'show all',
+                                    key: ValueKey<bool>(isShowAll),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: isShowAll
+                                          ? Colors.white
+                                          : Colors.white.withOpacity(0.73),
+                                      fontSize: 27,
+                                      fontFamily: 'Baby Bears',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Positioned(
+                              right: 0,
+                              child: AnimatedSwitcher(
+                                duration: Duration(milliseconds: 1000),
+                                child: SelectedOptionWidget(
+                                  onPressed: () {
+                                    setState(() {
+                                      isShowAll = !isShowAll;
+                                    });
+                                  },
+                                  isSelected: !isShowAll,
+                                  width: width * 0.555,
+                                  child: Text(
+                                    'show recommended',
+                                    key: ValueKey<bool>(!isShowAll),
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: !isShowAll
+                                          ? Colors.white
+                                          : Colors.white.withOpacity(0.73),
+                                      fontSize: 27,
+                                      fontFamily: 'Baby Bears',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )),
+                    Gap(20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 22),
                       child: Wrap(
                         spacing: 15,
                         runSpacing: 15,
-                        children: _sortedList.map((item) {
-                          return ElementWidget(
-                            element: item,
-                            isSelected:
-                                isSelected(item: item, type: widget.type),
-                            onSelectionChange: () {
-                              setState(() {
-                                if (widget.type == ChooseType.decorations &&
-                                    item is Decorations) {
-                                  if (selectedDecorations.any(
-                                    (decoration) => decoration.id == item.id,
-                                  )) {
-                                    selectedDecorations.removeWhere(
-                                      (decoration) => decoration.id == item.id,
-                                    );
-                                  } else {
-                                    selectedDecorations.add(item);
-                                  }
-                                } else if (widget.type == ChooseType.fish &&
-                                    item is Fish) {
-                                  if (selectedFish
-                                      .any((fish) => fish.id == item.id)) {
-                                    selectedFish.removeWhere(
-                                      (fish) => fish.id == item.id,
-                                    );
-                                  } else {
-                                    selectedFish.add(item);
-                                  }
-                                } else if (widget.type == ChooseType.plants &&
-                                    item is Plant) {
-                                  if (selectedPlants
-                                      .any((plant) => plant.id == item.id)) {
-                                    selectedPlants.removeWhere(
-                                      (plant) => plant.id == item.id,
-                                    );
-                                  } else {
-                                    selectedPlants.add(item);
-                                  }
-                                }
-                              });
-                            },
-                          );
-                        }).toList(),
+                        children: isShowAll
+                            ? _sortedList.map((item) {
+                                return ElementWidget(
+                                  element: item,
+                                  isSelected:
+                                      isSelected(item: item, type: widget.type),
+                                  onSelectionChange: () {
+                                    setState(() {
+                                      if (widget.type ==
+                                              ChooseType.decorations &&
+                                          item is Decorations) {
+                                        if (selectedDecorations.any(
+                                          (decoration) =>
+                                              decoration.id == item.id,
+                                        )) {
+                                          selectedDecorations.removeWhere(
+                                            (decoration) =>
+                                                decoration.id == item.id,
+                                          );
+                                        } else {
+                                          selectedDecorations.add(item);
+                                        }
+                                      } else if (widget.type ==
+                                              ChooseType.fish &&
+                                          item is Fish) {
+                                        if (selectedFish.any(
+                                            (fish) => fish.id == item.id)) {
+                                          selectedFish.removeWhere(
+                                            (fish) => fish.id == item.id,
+                                          );
+                                        } else {
+                                          selectedFish.add(item);
+                                        }
+                                      } else if (widget.type ==
+                                              ChooseType.plants &&
+                                          item is Plant) {
+                                        if (selectedPlants.any(
+                                            (plant) => plant.id == item.id)) {
+                                          selectedPlants.removeWhere(
+                                            (plant) => plant.id == item.id,
+                                          );
+                                        } else {
+                                          selectedPlants.add(item);
+                                        }
+                                      }
+                                    });
+                                  },
+                                );
+                              }).toList()
+                            : list.map((item) {
+                                return ElementWidget(
+                                  element: item,
+                                  isSelected:
+                                      isSelected(item: item, type: widget.type),
+                                  onSelectionChange: () {
+                                    setState(() {
+                                      if (widget.type ==
+                                              ChooseType.decorations &&
+                                          item is Decorations) {
+                                        if (selectedDecorations.any(
+                                          (decoration) =>
+                                              decoration.id == item.id,
+                                        )) {
+                                          selectedDecorations.removeWhere(
+                                            (decoration) =>
+                                                decoration.id == item.id,
+                                          );
+                                        } else {
+                                          selectedDecorations.add(item);
+                                        }
+                                      } else if (widget.type ==
+                                              ChooseType.fish &&
+                                          item is Fish) {
+                                        if (selectedFish.any(
+                                            (fish) => fish.id == item.id)) {
+                                          selectedFish.removeWhere(
+                                            (fish) => fish.id == item.id,
+                                          );
+                                        } else {
+                                          selectedFish.add(item);
+                                        }
+                                      } else if (widget.type ==
+                                              ChooseType.plants &&
+                                          item is Plant) {
+                                        if (selectedPlants.any(
+                                            (plant) => plant.id == item.id)) {
+                                          selectedPlants.removeWhere(
+                                            (plant) => plant.id == item.id,
+                                          );
+                                        } else {
+                                          selectedPlants.add(item);
+                                        }
+                                      }
+                                    });
+                                  },
+                                );
+                              }).toList(),
                       ),
                     ),
-                    Gap(16),
+                    const Gap(16),
                   ],
                 );
               } else {
@@ -115,7 +271,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
         ),
         AppBarWidget(
           title:
-              'Choose ${widget.type == ChooseType.decorations ? 'Decorations' : widget.type == ChooseType.fish ? 'Fish' : 'Plants'}',
+              'Choose${widget.type == ChooseType.decorations ? '${!isIpad ? '\n' : ''}Decorations' : widget.type == ChooseType.fish ? ' Fish' : ' Plants'}',
           hasBackIcon: true,
         ),
       ],
@@ -178,6 +334,7 @@ class ElementWidget extends StatelessWidget {
               : type == ChooseType.fish
                   ? ButtonColors.blue
                   : ButtonColors.green,
+          onPressed: onSelectionChange,
           radius: 17,
           width: 142,
           widget: Padding(
@@ -185,7 +342,7 @@ class ElementWidget extends StatelessWidget {
             child: Column(
               children: [
                 AppIcon(asset: imageUrl ?? ''),
-                Gap(9),
+                const Gap(9),
                 SizedBox(
                   height: 44,
                   width: 137,
@@ -194,7 +351,7 @@ class ElementWidget extends StatelessWidget {
                     child: Text(
                       name,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: Colors.white,
                         fontSize: 23,
                         fontFamily: 'Araside',
@@ -204,7 +361,7 @@ class ElementWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                Gap(8),
+                const Gap(8),
               ],
             ),
           ),
@@ -224,26 +381,27 @@ class ElementWidget extends StatelessWidget {
                     width: 32,
                     height: 32,
                     decoration: ShapeDecoration(
-                      gradient: LinearGradient(
+                      gradient: const LinearGradient(
                         begin: Alignment(-0.00, 1.00),
                         end: Alignment(0, -1),
                         colors: [Color(0xFFD9D9D9), Color(0xFFA2A2A2)],
                       ),
                       shape: RoundedRectangleBorder(
-                        side: BorderSide(width: 0.50, color: Color(0xFF999999)),
+                        side: const BorderSide(
+                            width: 0.50, color: Color(0xFF999999)),
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                   ),
                   AnimatedScale(
                     scale: isSelected ? 1.0 : 0.0,
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 600),
                     curve: Curves.easeInOut,
                     child: Container(
                       width: 26,
                       height: 26,
                       decoration: ShapeDecoration(
-                        gradient: LinearGradient(
+                        gradient: const LinearGradient(
                           begin: Alignment(-0.00, 1.00),
                           end: Alignment(0, -1),
                           colors: [Color(0xFF0096F4), Color(0xFF48C8FF)],
@@ -262,6 +420,144 @@ class ElementWidget extends StatelessWidget {
       ],
     );
   }
+}
+
+class SelectedOptionWidget extends StatelessWidget {
+  final Widget child;
+  final bool isSelected;
+  final double width;
+  final VoidCallback? onPressed;
+  const SelectedOptionWidget(
+      {super.key,
+      required this.child,
+      required this.isSelected,
+      required this.width,
+      required this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(19),
+        child: Ink(
+          height: 38,
+          width: width,
+          decoration: isSelected
+              ? ShapeDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                    colors: [
+                      Color(0xFF57ACFF),
+                      Color(0xFF2168D0),
+                      Color(0xFF3088F6),
+                      Color(0xFF084CB0)
+                    ],
+                    stops: [0.005, 0.15, 0.95, 1.0],
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(19),
+                  ),
+                )
+              : null,
+          child: Center(child: child),
+        ),
+      ),
+    );
+  }
+}
+
+List<Fish> getRecommendedFish(List<Fish> selectedFish, List<Fish> allFish) {
+  return allFish.where((fish) {
+    for (final selected in selectedFish) {
+      if (!fish.aggressive &&
+          fish.minOxygenLevel <= selected.maxOxygenLevel &&
+          fish.maxOxygenLevel >= selected.minOxygenLevel &&
+          fish.minTemperature <= selected.maxTemperature &&
+          fish.maxTemperature >= selected.minTemperature) {
+        return true;
+      }
+    }
+    return false;
+  }).toList();
+}
+
+/// Метод для проверки совместимости конкретной рыбы с другими рыбами в пруду
+bool checkFishCompatibilityWith(Fish newFish, List<Fish> fish) {
+  for (final f in fish) {
+    if (!newFish.recommendedFish.contains(f.id) ||
+        !f.recommendedFish.contains(newFish.id)) {
+      return false;
+    }
+    if (newFish.aggressive && f.size != "large") {
+      return false; // Агрессивная рыба несовместима с мелкими рыбами
+    }
+  }
+  return true;
+}
+
+/// Метод для получения рекомендованных растений для текущего состояния пруда
+List<Plant> getRecommendedPlants(
+    List<Plant> selectedPlants, List<Plant> allPlants) {
+  return allPlants.where((plant) {
+    for (final selected in selectedPlants) {
+      if (plant.lightRequirement == selected.lightRequirement &&
+          plant.growthRate == selected.growthRate &&
+          plant.minTemperature <= selected.maxTemperature &&
+          plant.maxTemperature >= selected.minTemperature) {
+        return true;
+      }
+    }
+    return false;
+  }).toList();
+}
+
+/// Метод для проверки совместимости конкретного растения с текущими условиями пруда
+bool checkPlantCompatibilityWith(Plant plant) {
+  if (plant.sensitiveToPollution) {
+    return false; // Растение чувствительно к загрязнению воды
+  }
+  return true;
+}
+
+/// Метод для получения рекомендованных декораций для текущего состояния пруда
+List<Decorations> getRecommendedDecorations(
+  List<Fish> selectedFish,
+  List<Plant> selectedPlants,
+  List<Decorations> allDecorations,
+) {
+  return allDecorations.where((decoration) {
+    // Условие: безопасно для рыб и не блокирует их плавание
+    if (!decoration.safeForFish || decoration.blocksSwimming) {
+      return false;
+    }
+
+    // Условие: укрытия для рыб, если есть рыбы, которые этого требуют
+    if (selectedFish.any((fish) => fish.needsShade)) {
+      if (!decoration.supportsFishHiding) {
+        return false;
+      }
+    }
+
+    // Условие: совместимость с растениями (например, не источник загрязнения)
+    if (selectedPlants.isNotEmpty && decoration.pollutantSource) {
+      return false;
+    }
+
+    return true;
+  }).toList();
+}
+
+/// Метод для проверки совместимости конкретной декорации с текущим состоянием пруда
+bool checkDecorationCompatibilityWith(Decorations decoration) {
+  if (!decoration.safeForFish ||
+      decoration.pollutantSource ||
+      decoration.blocksSwimming) {
+    return false; // Декорация небезопасна для рыб
+  }
+  return true;
 }
 
 enum ChooseType { plants, fish, decorations }
