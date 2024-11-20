@@ -18,10 +18,8 @@ class Pond {
   List<Plant> plants;
   List<Decorations> decorations;
   List<Task>? tasks;
-  String groundType; // Тип грунта
+
   double currentOxygenLevel; // Текущий уровень кислорода
-  double currentTemperature; // Текущая температура воды
-  double pumpPower; // Мощность насоса
   double pollutionLevel; // Уровень загрязнения воды
 
   Pond({
@@ -33,10 +31,9 @@ class Pond {
     required this.tasks,
     required this.plants,
     required this.decorations,
-    required this.groundType,
+
     required this.currentOxygenLevel,
-    required this.currentTemperature,
-    required this.pumpPower,
+
     this.pollutionLevel = 0.0,
   });
 
@@ -82,10 +79,7 @@ class Pond {
 
   /// Метод для проверки совместимости конкретного растения с текущими условиями пруда
   bool checkPlantCompatibilityWith(Plant plant) {
-    if (currentTemperature < plant.minTemperature ||
-        currentTemperature > plant.maxTemperature) {
-      return false; // Неподходящая температура для растения
-    }
+
     if (pollutionLevel > 50.0 && plant.sensitiveToPollution) {
       return false; // Растение чувствительно к загрязнению воды
     }
@@ -136,10 +130,7 @@ class Pond {
   /// Метод для проверки совместимости растений с текущим состоянием пруда
   bool checkPlantCompatibility() {
     for (final plant in plants) {
-      if (currentTemperature < plant.minTemperature ||
-          currentTemperature > plant.maxTemperature) {
-        return false; // Неподходящая температура
-      }
+      
       if (pollutionLevel > 50.0 && plant.sensitiveToPollution) {
         return false; // Растение чувствительно к загрязнению воды
       }
@@ -262,12 +253,6 @@ class Pond {
       recommendations['Fish'] = 'Некоторые рыбы конфликтуют между собой.';
     }
 
-    // Проверяем совместимость растений
-    if (!checkPlantCompatibility()) {
-      recommendations['Plants'] =
-          'Растениям неподходящие условия (температура или свет).';
-    }
-
     // Проверяем безопасность декораций
     if (!checkDecorationSafety()) {
       recommendations['Decorations'] =
@@ -304,19 +289,12 @@ class Pond {
     recommendations['Decoration Capacity'] =
         'Рекомендуемое количество декораций: $maxDecorations (в зависимости от размера).';
 
-    // Добавляем рекомендации по температуре
-    final double recommendedTemperature = calculateRecommendedTemperature();
-    if (currentTemperature != recommendedTemperature) {
-      recommendations['Temperature'] =
-          'Рекомендуемая температура воды: ${recommendedTemperature.toStringAsFixed(1)}°C.';
-    }
-
     // Добавляем рекомендации по грунту
     final String recommendedGround = calculateRecommendedGroundType();
-    if (groundType != recommendedGround) {
+
       recommendations['Ground Type'] =
           'Рекомендуемый тип грунта: $recommendedGround.';
-    }
+
 
     // Проверяем зоны плавания
     if (!checkSwimmingZones()) {
@@ -326,10 +304,10 @@ class Pond {
 
     // Добавляем рекомендации по мощности насоса
     final double recommendedPumpPower = calculatePumpPower();
-    if (pumpPower != recommendedPumpPower) {
+ 
       recommendations['Pump Power'] =
           'Рекомендуемая мощность насоса: ${recommendedPumpPower.toStringAsFixed(1)}.';
-    }
+
 
     // Добавляем рекомендации по очистке воды
     if (pollutionLevel > 50.0) {
@@ -383,31 +361,6 @@ class Pond {
     return requiredPumpPower;
   }
 
-  /// Расчёт рекомендуемой температуры
-  double calculateRecommendedTemperature() {
-    final List<double> minTemps = [];
-    final List<double> maxTemps = [];
-
-    for (final f in fish) {
-      minTemps.add(f.minTemperature);
-      maxTemps.add(f.maxTemperature);
-    }
-
-    for (final p in plants) {
-      minTemps.add(p.minTemperature);
-      maxTemps.add(p.maxTemperature);
-    }
-
-    if (minTemps.isEmpty || maxTemps.isEmpty)
-      return 25.0; // Значение по умолчанию
-
-    final double minTemp =
-        minTemps.reduce((a, b) => a > b ? a : b); // Наибольшее из минимальных
-    final double maxTemp =
-        maxTemps.reduce((a, b) => a < b ? a : b); // Наименьшее из максимальных
-
-    return (minTemp + maxTemp) / 2; // Среднее значение
-  }
 
   /// Расчёт рекомендуемого типа грунта
   String calculateRecommendedGroundType() {
@@ -459,10 +412,7 @@ class Pond {
       fish: fish ?? this.fish,
       plants: plants ?? this.plants,
       decorations: decorations ?? this.decorations,
-      groundType: groundType ?? this.groundType,
       currentOxygenLevel: currentOxygenLevel ?? this.currentOxygenLevel,
-      currentTemperature: currentTemperature ?? this.currentTemperature,
-      pumpPower: pumpPower ?? this.pumpPower,
       pollutionLevel: pollutionLevel ?? this.pollutionLevel,
     );
   }
@@ -477,10 +427,8 @@ class Pond {
       'fish': fish.map((x) => x.toMap()).toList(),
       'plants': plants.map((x) => x.toMap()).toList(),
       'decorations': decorations.map((x) => x.toMap()).toList(),
-      'groundType': groundType,
+
       'currentOxygenLevel': currentOxygenLevel,
-      'currentTemperature': currentTemperature,
-      'pumpPower': pumpPower,
       'pollutionLevel': pollutionLevel,
     };
   }
@@ -512,10 +460,8 @@ class Pond {
           (x) => Decorations.fromMap(x as Map<String, dynamic>),
         ),
       ),
-      groundType: map['groundType'] as String,
+
       currentOxygenLevel: map['currentOxygenLevel'] as double,
-      currentTemperature: map['currentTemperature'] as double,
-      pumpPower: map['pumpPower'] as double,
       pollutionLevel: map['pollutionLevel'] as double,
     );
   }
@@ -527,7 +473,7 @@ class Pond {
 
   @override
   String toString() {
-    return 'Pond(id: $id, name: $name, volume: $volume, photoUrl: $photoUrl, fish: $fish, plants: $plants, decorations: $decorations, groundType: $groundType, currentOxygenLevel: $currentOxygenLevel, currentTemperature: $currentTemperature, pumpPower: $pumpPower, pollutionLevel: $pollutionLevel)';
+    return 'Pond(id: $id, name: $name, volume: $volume, photoUrl: $photoUrl, fish: $fish, plants: $plants, decorations: $decorations, currentOxygenLevel: $currentOxygenLevel, pollutionLevel: $pollutionLevel)';
   }
 
   @override
@@ -542,10 +488,8 @@ class Pond {
         listEquals(other.tasks, tasks) &&
         listEquals(other.plants, plants) &&
         listEquals(other.decorations, decorations) &&
-        other.groundType == groundType &&
         other.currentOxygenLevel == currentOxygenLevel &&
-        other.currentTemperature == currentTemperature &&
-        other.pumpPower == pumpPower &&
+
         other.pollutionLevel == pollutionLevel;
   }
 
@@ -559,10 +503,8 @@ class Pond {
         fish.hashCode ^
         plants.hashCode ^
         decorations.hashCode ^
-        groundType.hashCode ^
         currentOxygenLevel.hashCode ^
-        currentTemperature.hashCode ^
-        pumpPower.hashCode ^
+
         pollutionLevel.hashCode;
   }
 }

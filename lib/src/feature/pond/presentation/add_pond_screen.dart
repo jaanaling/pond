@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
@@ -7,6 +9,7 @@ import 'package:pond_care/src/feature/pond/presentation/choose_screen.dart';
 import 'package:pond_care/ui_kit/app_button/app_button.dart';
 import 'package:pond_care/ui_kit/text_field/text_field.dart';
 import 'package:pond_care/routes/route_value.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 
@@ -27,6 +30,20 @@ class AddPondScreen extends StatefulWidget {
 class _AddPondScreenState extends State<AddPondScreen> {
   final _nameController = TextEditingController();
   final _volumeController = TextEditingController();
+  String? _image;
+
+  final ImagePicker _picker = ImagePicker(); // Экземпляр ImagePicker
+
+  Future<void> _pickImage() async {
+    // Открываем галерею для выбора изображения
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _image = pickedFile.path; // Сохраняем выбранное изображение
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,23 +61,35 @@ class _AddPondScreenState extends State<AddPondScreen> {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child: AppButton(
-                          color: ButtonColors.green,
-                          radius: 17,
-                          widget: Padding(
-                            padding: const EdgeInsets.all(30.0),
-                            child: AppIcon(
-                              asset: IconProvider.photo.buildImageUrl(),
-                              width: 66,
-                              height: 58,
-                            ),
-                          ),
-                        ),
+                        child: _image == null
+                            ? AppButton(
+                                onPressed: _pickImage,
+                                color: ButtonColors.green,
+                                radius: 17,
+                                widget: Padding(
+                                  padding: const EdgeInsets.all(30.0),
+                                  child: AppIcon(
+                                    asset: IconProvider.photo.buildImageUrl(),
+                                    width: 66,
+                                    height: 58,
+                                  ),
+                                ))
+                            : ClipRRect(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(17)),
+                                child: Image.file(
+                                  File(_image!),
+                                  width: 100,
+                                  height: 100,
+                                  fit: BoxFit.fill,
+                                ),
+                              ),
                       ),
                       Positioned(
                         bottom: 0,
                         right: 0,
                         child: AppButton(
+                          onPressed: _pickImage,
                           color: ButtonColors.lightBlue,
                           widget: SizedBox(
                             width: 52,

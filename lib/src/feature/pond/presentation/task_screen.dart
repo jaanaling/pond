@@ -54,7 +54,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
               ),
               onPressed: () => context.push(
-                  "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}/${RouteValue.history.path}"),
+                  "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}/${RouteValue.history.path}", ),
             ),
             Gap(11),
             ListView.separated(
