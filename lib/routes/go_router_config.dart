@@ -46,9 +46,7 @@ GoRouter buildGoRouter = GoRouter(
                   parentNavigatorKey: _homeNavigatorKey,
                   path: RouteValue.addPond.path,
                   builder: (context, state) {
-                    return AddPondScreen(
-                      key: UniqueKey(),
-                    );
+                    return const AddPondScreen();
                   },
                   routes: [
                     GoRoute(

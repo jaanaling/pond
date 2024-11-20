@@ -18,50 +18,68 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
+      alignment: Alignment.topCenter,
       children: [
+        SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.only(top: 139),
+            child: BlocBuilder<PondBloc, PondState>(
+              builder: (context, state) {
+                if (state is PondLoaded) {
+                  return state.pond.isEmpty
+                      ? Padding(
+                          padding: const EdgeInsets.only(top: 50),
+                          child: Text(
+                            'No Ponds Here!',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 31,
+                              fontFamily: 'Araside',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        )
+                      : ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemBuilder: (BuildContext context, int index) =>
+                              PondItem(pond: state.pond[index]),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              Gap(3),
+                          itemCount: state.pond.length);
+                } else {
+                  return CircularProgressIndicator();
+                }
+              },
+            ),
+          ),
+        ),
         AppBarWidget(
           title: 'All Ponds',
         ),
-        BlocBuilder<PondBloc, PondState>(
-          builder: (context, state) {
-            if (state is PondLoaded) {
-              return ListView.separated(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemBuilder: (BuildContext context, int index) => AppButton(
-                      onPressed: () => context.push(
-                            "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
-                            extra: state.pond[index],
-                          ),
-                      color: ButtonColors.red,
-                      widget: Text(state.pond[index].name)),
-                  separatorBuilder: (BuildContext context, int index) => Gap(3),
-                  itemCount: state.pond.length);
-            } else {
-              return CircularProgressIndicator();
-            }
-          },
-        ),
-        Spacer(),
-        Padding(
-          padding: EdgeInsets.only(bottom: 104),
-          child: AppButton(
-            onPressed: () {
-              context
-                  .push('${RouteValue.home.path}/${RouteValue.addPond.path}');
-            },
-            color: ButtonColors.green,
-            widget: Padding(
-              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
-              child: Text(
-                'Add Pond',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 31,
-                  fontFamily: 'Araside',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
+        Positioned(
+          bottom: 0,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: 104),
+            child: AppButton(
+              onPressed: () {
+                context
+                    .push('${RouteValue.home.path}/${RouteValue.addPond.path}');
+              },
+              color: ButtonColors.green,
+              widget: Padding(
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
+                child: Text(
+                  'Add Pond',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 31,
+                    fontFamily: 'Araside',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
                 ),
               ),
             ),
@@ -78,48 +96,91 @@ class PondItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AppButton(
-        color: ButtonColors.blue,
-        widget: Row(
-          children: [
-            AppButton(
-              color: ButtonColors.green,
-              radius: 17,
-              widget: Padding(
-                padding: const EdgeInsets.all(30.0),
-                child: AppIcon(
-                  asset: IconProvider.photo.buildImageUrl(),
-                  width: 59.14,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 13),
+      child: AppButton(
+          color: ButtonColors.blue,
+          onPressed: () => context.push(
+                "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
+                extra: pond,
+              ),
+          widget: Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 11),
+                child: Stack(
+                  children: [
+                    AppButton(
+                      color: ButtonColors.green,
+                      radius: 17,
+                      widget: Padding(
+                        padding: const EdgeInsets.all(30.0),
+                        child: AppIcon(
+                          asset: IconProvider.photo.buildImageUrl(),
+                          width: 59.14,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ),
-            Column(
-              children: [
-                Text(
-                  pond.name,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontFamily: 'Araside',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-                Text(
-                  'Pond volume: ${pond.volume}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontFamily: 'Baby Bears',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-                Row(
+              Padding(
+                padding: const EdgeInsets.only(right: 11),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    AppIcon(asset: IconProvider.fish.buildImageUrl()),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 188,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          pond.name,
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontFamily: 'Araside',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width - 188,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Text(
+                          'Pond volume: ${pond.volume}',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontFamily: 'Baby Bears',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        AppIcon(asset: IconProvider.fish.buildImageUrl()),
+                        Gap(12),
+                        Text(
+                          pond.fish.length.toString(),
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 25,
+                            fontFamily: 'Baby Bears',
+                            fontWeight: FontWeight.w400,
+                            height: 0,
+                          ),
+                        )
+                      ],
+                    ),
                     Text(
-                      pond.fish.length.toString(),
+                      'Active Tasks: ${pond.tasks?.length ?? 0}',
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 25,
@@ -127,32 +188,22 @@ class PondItem extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         height: 0,
                       ),
-                    )
+                    ),
+                    Text(
+                      'Overdue Tasks: ${pond.tasks?.where((task) => task.dueDate != null && task.dueDate!.isBefore(DateTime.now())).length ?? 0}',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 25,
+                        fontFamily: 'Baby Bears',
+                        fontWeight: FontWeight.w400,
+                        height: 0,
+                      ),
+                    ),
                   ],
                 ),
-                Text(
-                  'Active Tasks: ${pond.tasks}',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontFamily: 'Baby Bears',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-                Text(
-                  'Pond volume: 123',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 25,
-                    fontFamily: 'Baby Bears',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
-                  ),
-                ),
-              ],
-            )
-          ],
-        ));
+              )
+            ],
+          )),
+    );
   }
 }

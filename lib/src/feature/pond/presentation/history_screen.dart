@@ -11,115 +11,118 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        AppBarWidget(
-          title: "History",
-          hasBackIcon: true,
-        ),
         SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 13),
-          child: SafeArea(
-            child: BlocBuilder<PondBloc, PondState>(
-              builder: (context, state) {
-                if (state is PondLoaded) {
-                  final tasks = state.history;
-                  return ListView.separated(
-                    itemCount: tasks.length,
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    separatorBuilder: (context, index) => const Gap(11),
-                    itemBuilder: (context, index) {
-                      return AppButton(
-                        radius: 17,
-                        width: double.infinity,
-                        color: ButtonColors.blue,
-                        widget: Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            children: [
-                              Text(
-                                "${tasks[index].title} in pond ${tasks[index].pondId}",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 23,
-                                  fontFamily: 'Araside',
-                                  fontWeight: FontWeight.w400,
-                                  height: 0,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 139),
+            child: SafeArea(
+              child: BlocBuilder<PondBloc, PondState>(
+                builder: (context, state) {
+                  if (state is PondLoaded) {
+                    final tasks = state.history;
+                    return ListView.separated(
+                      itemCount: tasks.length,
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      separatorBuilder: (context, index) => const Gap(11),
+                      itemBuilder: (context, index) {
+                        return AppButton(
+                          radius: 17,
+                          width: double.infinity,
+                          color: ButtonColors.blue,
+                          widget: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              children: [
+                                Text(
+                                  "${tasks[index].title} in pond ${tasks[index].pondId}",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 23,
+                                    fontFamily: 'Araside',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
+                                  ),
                                 ),
-                              ),
-                              const Gap(4),
-                              Row(
-                                children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Doned in ${tasks[index].finishDate}',
-                                        style: TextStyle(
-                                          color: Colors.white.withOpacity(0.6),
-                                          fontSize: 27,
-                                          fontFamily: 'Baby Bears',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
-                                        ),
-                                      ),
-                                      if (tasks[index]
-                                              .dueDate!
-                                              .difference(
-                                                  tasks[index].finishDate ??
-                                                      DateTime.now())
-                                              .inDays >
-                                          0)
+                                const Gap(4),
+                                Row(
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
                                         Text(
-                                          'Pending',
+                                          'Doned in ${tasks[index].finishDate}',
                                           style: TextStyle(
-                                            color:
-                                                Colors.white.withOpacity(0.6),
+                                            color: Colors.white.withOpacity(0.6),
                                             fontSize: 27,
                                             fontFamily: 'Baby Bears',
                                             fontWeight: FontWeight.w400,
                                             height: 0,
                                           ),
-                                        )
-                                      else
-                                        Row(
-                                          children: [
-                                            Image.asset(
-                                              IconProvider.error
-                                                  .buildImageUrl(),
-                                              width: 34,
-                                              height: 34,
-                                            ),
-                                            const Gap(4),
-                                            const Text(
-                                              'Overdue',
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 27,
-                                                fontFamily: 'Baby Bears',
-                                                fontWeight: FontWeight.w400,
-                                                height: 0,
-                                              ),
-                                            ),
-                                          ],
                                         ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                                        if (tasks[index]
+                                                .dueDate!
+                                                .difference(
+                                                    tasks[index].finishDate ??
+                                                        DateTime.now())
+                                                .inDays >
+                                            0)
+                                          Text(
+                                            'Pending',
+                                            style: TextStyle(
+                                              color:
+                                                  Colors.white.withOpacity(0.6),
+                                              fontSize: 27,
+                                              fontFamily: 'Baby Bears',
+                                              fontWeight: FontWeight.w400,
+                                              height: 0,
+                                            ),
+                                          )
+                                        else
+                                          Row(
+                                            children: [
+                                              Image.asset(
+                                                IconProvider.error
+                                                    .buildImageUrl(),
+                                                width: 34,
+                                                height: 34,
+                                              ),
+                                              const Gap(4),
+                                              const Text(
+                                                'Overdue',
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 27,
+                                                  fontFamily: 'Baby Bears',
+                                                  fontWeight: FontWeight.w400,
+                                                  height: 0,
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
-                return Container();
-              },
+                        );
+                      },
+                    );
+                  }
+                  return Container();
+                },
+              ),
             ),
           ),
+        ),
+        AppBarWidget(
+          title: "History",
+          hasBackIcon: true,
         ),
       ],
     );

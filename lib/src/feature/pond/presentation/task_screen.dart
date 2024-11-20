@@ -13,6 +13,8 @@ import 'package:pond_care/src/feature/pond/models/pond.dart';
 import 'package:pond_care/src/feature/pond/models/task.dart';
 import 'package:pond_care/ui_kit/app_button/app_button.dart';
 
+import 'choose_screen.dart';
+
 class TaskScreen extends StatefulWidget {
   final Pond pond;
   const TaskScreen({
@@ -46,7 +48,86 @@ class _TaskScreenState extends State<TaskScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Placeholder(),
+                  Stack(
+                    children: [
+                      Container(
+                        width: 258,
+                        height: 38,
+                        decoration: ShapeDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withOpacity(0.5),
+                              Colors.black.withOpacity(0.39),
+                            ],
+                            stops: const [0.5, 1.0],
+                          ),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(19),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        left: 0,
+                        child: AnimatedSwitcher(
+                          duration: Duration(milliseconds: 1000),
+                          child: SelectedOptionWidget(
+                            onPressed: () {
+                              setState(() {
+                                isAllTask = !isAllTask;
+                              });
+                            },
+                            isSelected: isAllTask,
+                            width: 129,
+                            child: Text(
+                              'all tasks',
+                              key: ValueKey<bool>(isAllTask),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: isAllTask
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.73),
+                                fontSize: 27,
+                                fontFamily: 'Baby Bears',
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        right: 0,
+                        child: AnimatedSwitcher(
+                          duration: Duration(milliseconds: 1000),
+                          child: SelectedOptionWidget(
+                            onPressed: () {
+                              setState(() {
+                                isAllTask = !isAllTask;
+                              });
+                            },
+                            isSelected: !isAllTask,
+                            width: 129,
+                            child: Text(
+                              'overdue',
+                              key: ValueKey<bool>(!isAllTask),
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: !isAllTask
+                                    ? Colors.white
+                                    : Colors.white.withOpacity(0.73),
+                                fontSize: 27,
+                                fontFamily: 'Baby Bears',
+                                fontWeight: FontWeight.w400,
+                                height: 0,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                   Gap(11),
                   AppButton(
                     color: ButtonColors.lightBlue,
