@@ -17,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../main.dart';
 import '../models/decoration.dart';
 import '../models/plant.dart';
 
@@ -115,285 +116,389 @@ class _AddPondScreenState extends State<AddPondScreen> {
   @override
   Widget build(BuildContext context) {
     final bool isIpad = MediaQuery.of(context).size.shortestSide >= 600;
-    return SingleChildScrollView(
-      child: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 12, top: 27),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: SafeArea(
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 25, right: 12, top: 27),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(right: 12, bottom: 12),
-                        child: _image == null
-                            ? AppButton(
-                                onPressed: _pickImage,
-                                color: ButtonColors.green,
-                                radius: 17,
-                                widget: Padding(
-                                  padding: const EdgeInsets.all(30.0),
+                      Stack(
+                        children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: 12, bottom: 12),
+                            child: _image == null
+                                ? AppButton(
+                                    onPressed: _pickImage,
+                                    color: ButtonColors.green,
+                                    radius: 17,
+                                    widget: Padding(
+                                      padding: const EdgeInsets.all(30.0),
+                                      child: AppIcon(
+                                        asset:
+                                            IconProvider.photo.buildImageUrl(),
+                                        width: 66,
+                                        height: 58,
+                                      ),
+                                    ),
+                                  )
+                                : ClipRRect(
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(17)),
+                                    child: Image.file(
+                                      File(_image!),
+                                      width: 100,
+                                      height: 100,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                          ),
+                          Positioned(
+                            bottom: 0,
+                            right: 0,
+                            child: AppButton(
+                              onPressed: _pickImage,
+                              color: ButtonColors.lightBlue,
+                              widget: SizedBox(
+                                width: 52,
+                                height: 44,
+                                child: Center(
                                   child: AppIcon(
-                                    asset: IconProvider.photo.buildImageUrl(),
-                                    width: 66,
-                                    height: 58,
+                                    asset: IconProvider.add.buildImageUrl(),
+                                    width: 21,
+                                    height: 21,
                                   ),
                                 ),
-                              )
-                            : ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(17)),
-                                child: Image.file(
-                                  File(_image!),
-                                  width: 100,
-                                  height: 100,
-                                  fit: BoxFit.fill,
-                                ),
-                              ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: AppButton(
-                          onPressed: _pickImage,
-                          color: ButtonColors.lightBlue,
-                          widget: SizedBox(
-                            width: 52,
-                            height: 44,
-                            child: Center(
-                              child: AppIcon(
-                                asset: IconProvider.add.buildImageUrl(),
-                                width: 21,
-                                height: 21,
                               ),
                             ),
                           ),
+                        ],
+                      ),
+                      Text(
+                        'Upload Pond${isIpad ? ' ' : '\n'}Photo',
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 26,
+                          fontFamily: 'Araside',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
                         ),
                       ),
                     ],
                   ),
-                  Text(
-                    'Upload Pond${isIpad ? ' ' : '\n'}Photo',
+                ),
+                const Gap(24),
+                const Text(
+                  'Enter Pond Name',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 26,
+                    fontFamily: 'Araside',
+                    fontWeight: FontWeight.w400,
+                    height: 0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const Gap(9),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: AppTextField(
+                    controller: _nameController,
+                    height: 78,
+                  ),
+                ),
+                const Gap(21),
+                Align(
+                  child: Text(
+                    'Enter Pond Volume${isIpad ? ' ' : '\n'}(in Liters)',
+                    textAlign: TextAlign.center,
                     style: const TextStyle(
                       color: Colors.white,
-                      fontSize: 26,
+                      fontSize: 20,
                       fontFamily: 'Araside',
                       fontWeight: FontWeight.w400,
                       height: 0,
                     ),
                   ),
-                ],
-              ),
-            ),
-            const Gap(24),
-            const Text(
-              'Enter Pond Name',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 26,
-                fontFamily: 'Araside',
-                fontWeight: FontWeight.w400,
-                height: 0,
-              ),
-              textAlign: TextAlign.center,
-            ),
-            const Gap(9),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 25),
-              child: AppTextField(
-                controller: _nameController,
-                height: 78,
-              ),
-            ),
-            const Gap(21),
-            Align(
-              child: Text(
-                'Enter Pond Volume${isIpad ? ' ' : '\n'}(in Liters)',
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontFamily: 'Araside',
-                  fontWeight: FontWeight.w400,
-                  height: 0,
                 ),
-              ),
-            ),
-            AppTextField(
-              controller: _volumeController,
-              onChanged: (value) {
-                // Заменяем запятую на точку
-                String newText = value.replaceAll(',', '.');
+                AppTextField(
+                  controller: _volumeController,
+                  onChanged: (value) {
+                    // Заменяем запятую на точку
+                    String newText = value.replaceAll(',', '.');
 
-                // Проверяем, что в строке больше одной точки
-                if (newText.split('.').length - 1 > 1) {
-                  // Убираем все точки, кроме самой первой
-                  final int firstDotIndex = newText.indexOf('.');
-                  newText = newText.substring(0, firstDotIndex + 1) +
-                      newText.substring(firstDotIndex + 1).replaceAll('.', '');
-                }
+                    // Проверяем, что в строке больше одной точки
+                    if (newText.split('.').length - 1 > 1) {
+                      // Убираем все точки, кроме самой первой
+                      final int firstDotIndex = newText.indexOf('.');
+                      newText = newText.substring(0, firstDotIndex + 1) +
+                          newText
+                              .substring(firstDotIndex + 1)
+                              .replaceAll('.', '');
+                    }
 
-                // Ограничиваем ввод до восьми цифр до точки и трех после
-                if (newText.isNotEmpty &&
-                    !RegExp(r'^\d{0,8}(\.\d{0,3})?$').hasMatch(newText)) {
-                  final int dotIndex = newText.indexOf('.');
+                    // Ограничиваем ввод до восьми цифр до точки и трех после
+                    if (newText.isNotEmpty &&
+                        !RegExp(r'^\d{0,8}(\.\d{0,3})?$').hasMatch(newText)) {
+                      final int dotIndex = newText.indexOf('.');
 
-                  if (dotIndex != -1) {
-                    final String beforeDot = newText.substring(0, dotIndex);
-                    final String afterDot = newText.substring(dotIndex + 1);
+                      if (dotIndex != -1) {
+                        final String beforeDot = newText.substring(0, dotIndex);
+                        final String afterDot = newText.substring(dotIndex + 1);
 
-                    // Ограничиваем ввод
-                    newText = '${beforeDot.substring(
-                      0,
-                      beforeDot.length > 8 ? 8 : beforeDot.length,
-                    )}.${afterDot.substring(
-                      0,
-                      afterDot.length > 3 ? 3 : afterDot.length,
-                    )}';
-                  } else {
-                    newText = newText.substring(
-                      0,
-                      newText.length > 8 ? 8 : newText.length,
-                    );
-                  }
-                }
+                        // Ограничиваем ввод
+                        newText = '${beforeDot.substring(
+                          0,
+                          beforeDot.length > 8 ? 8 : beforeDot.length,
+                        )}.${afterDot.substring(
+                          0,
+                          afterDot.length > 3 ? 3 : afterDot.length,
+                        )}';
+                      } else {
+                        newText = newText.substring(
+                          0,
+                          newText.length > 8 ? 8 : newText.length,
+                        );
+                      }
+                    }
 
-                // Обновляем текст только если он изменился
-                if (newText != value) {
-                  _volumeController.text = newText;
-                  _volumeController.selection = TextSelection.fromPosition(
-                    TextPosition(offset: newText.length),
-                  );
-                }
-              },
-              height: 52,
-              width: MediaQuery.of(context).size.width * 0.39,
-              textInputType: TextInputType.number,
-            ),
-            if (checkElementCountsBySize() != null) const Gap(24),
-            if (checkElementCountsBySize() != null)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      IconProvider.error.buildImageUrl(),
-                      width: 62,
-                      height: 62,
+                    // Обновляем текст только если он изменился
+                    if (newText != value) {
+                      _volumeController.text = newText;
+                      _volumeController.selection = TextSelection.fromPosition(
+                        TextPosition(offset: newText.length),
+                      );
+                    }
+                  },
+                  height: 52,
+                  width: MediaQuery.of(context).size.width * 0.39,
+                  textInputType: TextInputType.number,
+                ),
+                if (checkElementCountsBySize() != null) const Gap(24),
+                if (checkElementCountsBySize() != null)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        Image.asset(
+                          IconProvider.error.buildImageUrl(),
+                          width: 62,
+                          height: 62,
+                        ),
+                        const Gap(4),
+                        Expanded(
+                            child: Text(
+                          checkElementCountsBySize()!,
+                          style: TextStyle(fontFamily: 'Baby Bears'),
+                        )),
+                      ],
                     ),
-                    const Gap(4),
-                    Expanded(
-                        child: Text(
-                      checkElementCountsBySize()!,
-                      style: TextStyle(fontFamily: 'Baby Bears'),
-                    )),
+                  ),
+                const Gap(24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ChooseButton(
+                      text: 'Choose Plants',
+                      onPressed: () {
+                        context.push(
+                          '${RouteValue.home.path}/${RouteValue.addPond.path}/${RouteValue.choose.path}',
+                          extra: ChooseType.plants,
+                        );
+                      },
+                    ),
+                    ChooseButton(
+                      text: 'Choose Decorations',
+                      fontSize: 17,
+                      onPressed: () {
+                        context.push(
+                          '${RouteValue.home.path}/${RouteValue.addPond.path}/${RouteValue.choose.path}',
+                          extra: ChooseType.decorations,
+                        );
+                      },
+                    ),
                   ],
                 ),
-              ),
-            const Gap(24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
+                const Gap(21),
                 ChooseButton(
-                  text: 'Choose Plants',
+                  text: 'Choose${isIpad ? ' ' : '\n'}Fish',
                   onPressed: () {
                     context.push(
                       '${RouteValue.home.path}/${RouteValue.addPond.path}/${RouteValue.choose.path}',
-                      extra: ChooseType.plants,
+                      extra: ChooseType.fish,
                     );
                   },
                 ),
-                ChooseButton(
-                  text: 'Choose Decorations',
-                  fontSize: 17,
-                  onPressed: () {
-                    context.push(
-                      '${RouteValue.home.path}/${RouteValue.addPond.path}/${RouteValue.choose.path}',
-                      extra: ChooseType.decorations,
-                    );
-                  },
+                Padding(
+                  padding: const EdgeInsets.only(top: 48),
+                  child: AppButton(
+                    onPressed: () {
+                      if (widget.pond != null) {
+                        context.read<PondBloc>().add(
+                              UpdatePond(
+                                Pond(
+                                  id: widget.pond!.id,
+                                  photoUrl: _image,
+                                  name: _nameController.text,
+                                  volume: _volumeController.text.isNotEmpty
+                                      ? double.parse(_volumeController.text)
+                                      : 0,
+                                  fish: [...selectedFish],
+                                  tasks: [...?widget.pond!.tasks],
+                                  plants: [...selectedPlants],
+                                  decorations: [...selectedDecorations],
+                                ),
+                              ),
+                            );
+                      } else {
+                        context.read<PondBloc>().add(
+                              SavePond(
+                                Pond(
+                                  id: DateTime.now()
+                                      .microsecondsSinceEpoch
+                                      .toString(),
+                                  photoUrl: _image,
+                                  name: _nameController.text,
+                                  volume: _volumeController.text.isNotEmpty
+                                      ? double.parse(_volumeController.text)
+                                      : 0,
+                                  fish: [...selectedFish],
+                                  tasks: [],
+                                  plants: [...selectedPlants],
+                                  decorations: [...selectedDecorations],
+                                ),
+                              ),
+                            );
+                      }
+
+                      selectedFish.clear();
+                      selectedDecorations.clear();
+                      selectedPlants.clear();
+
+                      context.pop();
+                    },
+                    color: ButtonColors.green,
+                    widget: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 54),
+                      child: Text(
+                        widget.pond != null ? 'Update Pond' : 'Add Pond',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 31,
+                          fontFamily: 'Araside',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-            const Gap(21),
-            ChooseButton(
-              text: 'Choose${isIpad ? ' ' : '\n'}Fish',
-              onPressed: () {
-                context.push(
-                  '${RouteValue.home.path}/${RouteValue.addPond.path}/${RouteValue.choose.path}',
-                  extra: ChooseType.fish,
-                );
-              },
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 48),
-              child: AppButton(
-                onPressed: () {
-                  if (widget.pond != null) {
-                    context.read<PondBloc>().add(
-                          UpdatePond(
-                            Pond(
-                              id: widget.pond!.id,
-                              photoUrl: _image,
-                              name: _nameController.text,
-                              volume: _volumeController.text.isNotEmpty
-                                  ? double.parse(_volumeController.text)
-                                  : 0,
-                              fish: [...selectedFish],
-                              tasks: [...?widget.pond!.tasks],
-                              plants: [...selectedPlants],
-                              decorations: [...selectedDecorations],
-                            ),
-                          ),
-                        );
-                  } else {
-                    context.read<PondBloc>().add(
-                          SavePond(
-                            Pond(
-                              id: DateTime.now()
-                                  .microsecondsSinceEpoch
-                                  .toString(),
-                              photoUrl: _image,
-                              name: _nameController.text,
-                              volume: _volumeController.text.isNotEmpty
-                                  ? double.parse(_volumeController.text)
-                                  : 0,
-                              fish: [...selectedFish],
-                              tasks: [],
-                              plants: [...selectedPlants],
-                              decorations: [...selectedDecorations],
-                            ),
-                          ),
-                        );
-                  }
+          ),
+        ),
+        if (widget.pond != null ? !isEditScreenLoaded : !isCreateScreenLoaded)
+          Stack(
+            alignment: Alignment.topCenter,
+            children: [
+              Positioned.fill(
+                child: Container(
+                  color: Colors.black.withOpacity(0.6799999833106995),
+                ),
+              ),
+              SafeArea(
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 22),
+                  child: Column(
+                    children: [
+                      Gap(MediaQuery.of(context).size.height * 0.147 -
+                          MediaQuery.of(context).padding.top),
+                      Text(
+                        widget.pond == null
+                            ? 'WELCOME TO YOUR POND CREATION!'
+                            : 'LET’S EDIT YOUR POND!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 33,
+                          fontFamily: 'Araside',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      Gap(10),
+                      Text(
+                        widget.pond == null
+                            ? 'Here, you can set up your pond by providing a name, volume, and select fish, plants, and decorations!'
+                            : 'You can change the pond name, volume, and update the fish, plants, and decorations here!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 27,
+                          fontFamily: 'Baby Bears',
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: -(MediaQuery.of(context).size.height * 0.108),
+                child: AppIcon(
+                  asset: widget.pond == null
+                      ? IconProvider.masqot1.buildImageUrl()
+                      : IconProvider.masqot3.buildImageUrl(),
+                  width: MediaQuery.of(context).size.width * 0.986,
+                  height: MediaQuery.of(context).size.height * 0.73,
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                child: Padding(
+                  padding: EdgeInsets.only(bottom: 104),
+                  child: AppButton(
+                    onPressed: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setBool(
+                        widget.pond == null ? 'createScreen' : 'edit',
+                        true,
+                      );
 
-                  selectedFish.clear();
-                  selectedDecorations.clear();
-                  selectedPlants.clear();
-
-                  context.pop();
-                },
-                color: ButtonColors.green,
-                widget: Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
-                  child: Text(
-                    widget.pond != null ? 'Update Pond' : 'Add Pond',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 31,
-                      fontFamily: 'Araside',
-                      fontWeight: FontWeight.w400,
-                      height: 0,
+                      setState(() {
+                        if (widget.pond == null) {
+                          isCreateScreenLoaded = true;
+                        } else {
+                          isEditScreenLoaded = true;
+                        }
+                      });
+                    },
+                    color: ButtonColors.green,
+                    widget: Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 20, horizontal: 54),
+                      child: Text(
+                        'Got It!',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 31,
+                          fontFamily: 'Araside',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
-          ],
-        ),
-      ),
+            ],
+          )
+      ],
     );
   }
 }
