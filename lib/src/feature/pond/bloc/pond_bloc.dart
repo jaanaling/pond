@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:pond_care/src/core/dependency_injection.dart';
+import 'package:pond_care/src/core/utils/log.dart';
 import 'package:pond_care/src/feature/pond/models/decoration.dart';
 import 'package:pond_care/src/feature/pond/models/fish.dart';
 import 'package:pond_care/src/feature/pond/models/plant.dart';
@@ -32,17 +33,23 @@ class PondBloc extends Bloc<PondEvent, PondState> {
     try {
       final SharedPreferences pref = await SharedPreferences.getInstance();
       final pond = await _repository.load();
+      logger.d(pond);
       final fish = await _repository.loadFish();
+      logger.d(fish);
       final plants = await _repository.loadPlants();
+      logger.d(plants);
       final decorations = await _repository.loadDecorations();
+      logger.d(decorations);
       final history = pref
               .getStringList('history')
               ?.map((e) => Task.fromMap(Task.fromJson(e).toMap()))
               .toList() ??
           [];
+          
 
       emit(PondLoaded(pond, fish, plants, decorations, history));
     } catch (e) {
+      logger.e(e);
       emit(const PondError('Failed to load pond'));
     }
   }

@@ -8,6 +8,8 @@ enum IconProvider {
   appBar(imageName: 'appbar.png'),
   noPhoto(imageName: "no_photo.png"),
   back(imageName: 'back.png'),
+  photo(imageName: 'photo.png'),
+  add(imageName: 'add.png'),
 
   unknown(imageName: '');
 

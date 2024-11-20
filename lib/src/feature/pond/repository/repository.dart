@@ -20,7 +20,7 @@ class PondRepository {
 
   Future<List<Fish>> loadFish() {
     return JsonLoader.loadData<Fish>(
-      key,
+      "fish",
       'assets/json/fish.json',
       (json) => Fish.fromMap(json),
     );
@@ -28,7 +28,7 @@ class PondRepository {
 
   Future<List<Plant>> loadPlants() {
     return JsonLoader.loadData<Plant>(
-      key,
+      "plants",
       'assets/json/plants.json',
       (json) => Plant.fromMap(json),
     );
@@ -36,7 +36,7 @@ class PondRepository {
 
   Future<List<Decorations>> loadDecorations() {
     return JsonLoader.loadData<Decorations>(
-      key,
+      "decorations",
       'assets/json/decorations.json',
       (json) => Decorations.fromMap(json),
     );
@@ -44,7 +44,7 @@ class PondRepository {
 
    Future<List<Task>> loadTasks() {
     return JsonLoader.loadData<Task>(
-      key,
+      "tasks",
       'assets/json/tasks.json',
       (json) => Task.fromMap(json),
     );

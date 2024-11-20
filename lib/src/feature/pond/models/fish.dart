@@ -136,7 +136,7 @@ class Fish {
       maxOxygenLevel: map['maxOxygenLevel'] as double,
       minTemperature: map['minTemperature'] as double,
       maxTemperature: map['maxTemperature'] as double,
-      recommendedFish: List<String>.from(map['recommendedFish'] as List<String>),
+      recommendedFish: List<String>.from(map['recommendedFish'] as List<dynamic>),
       dietType: map['dietType'] as String,
       activityLevel: map['activityLevel'] as int,
       color: map['color'] as String,

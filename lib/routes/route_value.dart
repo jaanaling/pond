@@ -17,8 +17,8 @@ enum RouteValue {
   history(
     path: 'history',
   ),
-  items(
-    path: 'items',
+  choose(
+    path: 'choose',
   ),
   unknown(
     path: '',
