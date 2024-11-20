@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
 class Task {
@@ -87,5 +88,30 @@ class Task {
   @override
   String toString() {
     return 'Task(id: $id, title: $title, dueDate: $dueDate, finishDate: $finishDate, isPeriodic: $isPeriodic, periodicityDays: $periodicityDays, pondId: $pondId)';
+  }
+
+  @override
+  bool operator ==(covariant Task other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.id == id &&
+      other.title == title &&
+      other.dueDate == dueDate &&
+      other.finishDate == finishDate &&
+      other.isPeriodic == isPeriodic &&
+      other.periodicityDays == periodicityDays &&
+      other.pondId == pondId;
+  }
+
+  @override
+  int get hashCode {
+    return id.hashCode ^
+      title.hashCode ^
+      dueDate.hashCode ^
+      finishDate.hashCode ^
+      isPeriodic.hashCode ^
+      periodicityDays.hashCode ^
+      pondId.hashCode;
   }
 }

@@ -68,7 +68,7 @@ GoRouter buildGoRouter = GoRouter(
                   path: RouteValue.details.path,
                   builder: (context, state) {
                     return DetailsScreen(
-                      pond: state.extra! as Pond,
+                      pondd: state.extra! as Pond,
                       key: UniqueKey(),
                     );
                   },

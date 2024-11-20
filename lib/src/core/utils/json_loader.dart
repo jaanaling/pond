@@ -15,7 +15,7 @@ class JsonLoader {
     final jsonData = prefs.getString(key);
     if (jsonData != null) {
       final List<dynamic> decodedJson = jsonDecode(jsonData) as List<dynamic>;
-      logger.d(decodedJson);
+     
       return decodedJson
           .whereType<Map<String, dynamic>>()
           .map((json) => fromMap(json))
@@ -23,7 +23,7 @@ class JsonLoader {
     } else {
       final assetJson = await rootBundle.loadString(assetPath);
       prefs.setString(key, assetJson);
-      logger.d(assetJson);
+    
       return (json.decode(assetJson) as List<dynamic>)
           .map((e) => fromMap(e as Map<String, dynamic>))
           .toList();
@@ -51,8 +51,13 @@ class JsonLoader {
   ) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<T> itemList = await loadData();
+    logger.d(itemList);
 
     itemList.remove(item);
+    logger.d(item);
+
+    logger.d(itemList);
+
 
     prefs.setString(key, json.encode(itemList.map(toMap).toList()));
   }

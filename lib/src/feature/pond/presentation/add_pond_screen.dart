@@ -51,8 +51,6 @@ class _AddPondScreenState extends State<AddPondScreen> {
     }
   }
 
-
-
   Future<void> _pickImage() async {
     // Открываем галерею для выбора изображения
     final XFile? pickedFile =
@@ -140,7 +138,8 @@ class _AddPondScreenState extends State<AddPondScreen> {
                                     width: 66,
                                     height: 58,
                                   ),
-                                ))
+                                ),
+                              )
                             : ClipRRect(
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(17)),
@@ -326,18 +325,43 @@ class _AddPondScreenState extends State<AddPondScreen> {
               padding: const EdgeInsets.only(top: 48),
               child: AppButton(
                 onPressed: () {
-                  context.read<PondBloc>().add(SavePond(Pond(
-                        id: DateTime.now().microsecondsSinceEpoch.toString(),
-                        photoUrl: _image,
-                        name: _nameController.text,
-                        volume: _volumeController.text.isNotEmpty
-                            ? double.parse(_volumeController.text)
-                            : 0,
-                        fish: selectedFish,
-                        tasks: [],
-                        plants: selectedPlants,
-                        decorations: selectedDecorations,
-                      )));
+                  if (widget.pond != null) {
+                    context.read<PondBloc>().add(
+                          UpdatePond(
+                            Pond(
+                              id: widget.pond!.id,
+                              photoUrl: _image,
+                              name: _nameController.text,
+                              volume: _volumeController.text.isNotEmpty
+                                  ? double.parse(_volumeController.text)
+                                  : 0,
+                              fish: selectedFish,
+                              tasks: widget.pond!.tasks,
+                              plants: selectedPlants,
+                              decorations: selectedDecorations,
+                            ),
+                          ),
+                        );
+                  } else {
+                    context.read<PondBloc>().add(
+                          SavePond(
+                            Pond(
+                              id: DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString(),
+                              photoUrl: _image,
+                              name: _nameController.text,
+                              volume: _volumeController.text.isNotEmpty
+                                  ? double.parse(_volumeController.text)
+                                  : 0,
+                              fish: selectedFish,
+                              tasks: [],
+                              plants: selectedPlants,
+                              decorations: selectedDecorations,
+                            ),
+                          ),
+                        );
+                  }
                   selectedFish.clear();
                   selectedDecorations.clear();
                   selectedPlants.clear();
@@ -345,10 +369,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
                   context.pop();
                 },
                 color: ButtonColors.green,
-                widget: const Padding(
+                widget:  Padding(
                   padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
                   child: Text(
-                    'Add Pond',
+                  widget.pond != null ? 'Update Pond' :  'Add Pond',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 31,

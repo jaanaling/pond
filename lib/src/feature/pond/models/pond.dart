@@ -290,7 +290,7 @@ class Pond {
 
   double calculatePumpPower() {
     // Базовое требование: 1 литр воды = 1 литр/час мощности насоса
-    final double basePumpPower = volume;
+    final double basePumpPower = volume / 2;
 
     // Дополнительное требование на каждую рыбу
     final double fishPumpRequirement = fish.fold(0.0, (sum, f) {
