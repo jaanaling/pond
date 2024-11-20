@@ -382,10 +382,9 @@ class ElementWidget extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
             child: SizedBox(
               width: MediaQuery.of(context).size.width * 0.8,
-           
               child: AppButton(
                 color: ButtonColors.blue,
-                widget:SingleChildScrollView(
+                widget: SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(16),
                     child: Column(
@@ -399,7 +398,8 @@ class ElementWidget extends StatelessWidget {
                         alertText('Max. oxygen level: ${el.maxOxygenLevel}'),
                         alertText('Min. temperature: ${el.minTemperature}'),
                         alertText('Max. temperature: ${el.maxTemperature}'),
-                        alertText('Aggression: ${el.aggressive ? 'Yes' : 'No'}'),
+                        alertText(
+                            'Aggression: ${el.aggressive ? 'Yes' : 'No'}'),
                         alertText(
                           "Recommended fish: ${el.recommendedFish.join(', ')}",
                         ),

@@ -24,7 +24,8 @@ List<Decorations> selectedDecorations = [];
 List<Plant> selectedPlants = [];
 
 class AddPondScreen extends StatefulWidget {
-  const AddPondScreen({super.key});
+  final Pond? pond;
+  const AddPondScreen({super.key, this.pond});
 
   @override
   State<AddPondScreen> createState() => _AddPondScreenState();
@@ -36,6 +37,21 @@ class _AddPondScreenState extends State<AddPondScreen> {
   String? _image;
 
   final ImagePicker _picker = ImagePicker(); // Экземпляр ImagePicker
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.pond != null) {
+      _nameController.text = widget.pond!.name;
+      _volumeController.text = widget.pond!.volume.toString();
+      _image = widget.pond!.photoUrl;
+      selectedFish = widget.pond!.fish;
+      selectedPlants = widget.pond!.plants;
+      selectedDecorations = widget.pond!.decorations;
+    }
+  }
+
+
 
   Future<void> _pickImage() async {
     // Открываем галерею для выбора изображения

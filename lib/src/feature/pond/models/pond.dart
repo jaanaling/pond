@@ -191,18 +191,7 @@ class Pond {
     final Map<String, int> sizeData = calculateMaxElementsBySize();
 
     if (sizeData['currentFishUnits']! > sizeData['maxUnits']!) {
-      warnings['Fish'] = 'Рыбы занимают слишком много места. '
-          'Используется ${sizeData['currentFishUnits']} из доступных ${sizeData['maxUnits']} условных единиц.';
-    }
-
-    if (sizeData['currentPlantUnits']! > sizeData['maxUnits']!) {
-      warnings['Plants'] = 'Растения занимают слишком много места. '
-          'Используется ${sizeData['currentPlantUnits']} из доступных ${sizeData['maxUnits']} условных единиц.';
-    }
-
-    if (sizeData['currentDecorationUnits']! > sizeData['maxUnits']!) {
-      warnings['Decorations'] = 'Декорации занимают слишком много места. '
-          'Используется ${sizeData['currentDecorationUnits']} из доступных ${sizeData['maxUnits']} условных единиц.';
+      warnings['Decorations'] = 'The scenery takes up too much space.';
     }
 
     return warnings;
@@ -213,16 +202,10 @@ class Pond {
         (volume / 50).floor(); // Каждая условная единица требует 50 литров воды
     final int currentFishUnits =
         fish.fold(0, (sum, f) => sum + _getSizeUnit(f.size));
-    final int currentPlantUnits =
-        plants.fold(0, (sum, p) => sum + _getSizeUnit(p.size));
-    final int currentDecorationUnits =
-        decorations.fold(0, (sum, d) => sum + _getSizeUnit(d.size));
 
     return {
       'maxUnits': maxUnits,
       'currentFishUnits': currentFishUnits,
-      'currentPlantUnits': currentPlantUnits,
-      'currentDecorationUnits': currentDecorationUnits,
     };
   }
 
@@ -240,28 +223,32 @@ class Pond {
     }
   }
 
-  Map<String, String> getRecommendations() {
+  Map<String, String> getErrors() {
     final Map<String, String> recommendations = HashMap();
-
     // Проверяем совместимость рыб
     if (!checkFishCompatibility()) {
-      recommendations['Fish'] = 'Некоторые рыбы конфликтуют между собой.';
+      recommendations['Fish'] = 'Some fish are in conflict with each other.';
     }
 
     // Проверяем безопасность декораций
     if (!checkDecorationSafety()) {
-      recommendations['Decorations'] =
-          'Некоторые украшения небезопасны для рыб.';
+      recommendations['Decorations'] = 'Some decorations are unsafe for fish.';
     }
 
     // Проверяем уровень кислорода
     if (!checkOxygenLevel()) {
       recommendations['Oxygen'] =
-          'Недостаточно кислорода. Рекомендуется добавить растения или увеличить мощность насоса.';
+          'There is not enough oxygen. It is recommended to add plants or increase the pump power.';
     }
 
-    // Проверяем вместимость элементов
     recommendations.addAll(checkElementCountsBySize());
+    return recommendations;
+  }
+
+  Map<String, String> getRecommendations() {
+    final Map<String, String> recommendations = HashMap();
+
+    // Проверяем вместимость элементов
 
     // Добавляем рекомендации по количеству рыб, растений и декораций в зависимости от их размера
     final Map<String, int> maxElements = calculateMaxElementsBySize();
@@ -270,42 +257,32 @@ class Pond {
     final int maxFish =
         maxElements['maxUnits']! - maxElements['currentFishUnits']!;
     recommendations['Fish Capacity'] =
-        'Рекомендуемое количество рыб: $maxFish (в зависимости от размера).';
+        'Recommended number of elements: $maxFish';
 
     // Рекомендации для растений
-    final int maxPlants =
-        maxElements['maxUnits']! - maxElements['currentPlantUnits']!;
-    recommendations['Plant Capacity'] =
-        'Рекомендуемое количество растений: $maxPlants (в зависимости от размера).';
-
-    // Рекомендации для декораций
-    final int maxDecorations =
-        maxElements['maxUnits']! - maxElements['currentDecorationUnits']!;
-    recommendations['Decoration Capacity'] =
-        'Рекомендуемое количество декораций: $maxDecorations (в зависимости от размера).';
 
     // Добавляем рекомендации по грунту
     final String recommendedGround = calculateRecommendedGroundType();
 
     recommendations['Ground Type'] =
-        'Рекомендуемый тип грунта: $recommendedGround.';
+        'Recommended type of soil: $recommendedGround.';
 
     // Проверяем зоны плавания
     if (!checkSwimmingZones()) {
       recommendations['Swimming Zones'] =
-          'Слишком много рыб в одной зоне плавания.';
+          'There are too many fish in one swimming area.';
     }
 
     // Добавляем рекомендации по мощности насоса
     final double recommendedPumpPower = calculatePumpPower();
 
     recommendations['Pump Power'] =
-        'Рекомендуемая мощность насоса: ${recommendedPumpPower.toStringAsFixed(1)}.';
+        'Recommended pump power: ${recommendedPumpPower.toStringAsFixed(1)}.';
 
     // Добавляем рекомендации по очистке воды
     if (pollutionLevel > 50.0) {
       recommendations['Water Purification'] =
-          'Высокий уровень загрязнения. Рекомендуется увеличить количество растений или использовать фильтры.';
+          'High level of pollution. It is recommended to increase the number of plants or use filters.';
     }
 
     return recommendations;
@@ -409,14 +386,13 @@ class Pond {
   }
 
   Map<String, dynamic> toMap() {
-
     return <String, dynamic>{
       'id': id,
       'name': name,
       'volume': volume,
       'tasks': tasks?.map((x) => x.toMap()).toList(),
       'photoUrl': photoUrl,
-      'fish': fish.map((x) => x.toMap()).toList() ,
+      'fish': fish.map((x) => x.toMap()).toList(),
       'plants': plants.map((x) => x.toMap()).toList(),
       'decorations': decorations.map((x) => x.toMap()).toList(),
       'pollutionLevel': pollutionLevel,

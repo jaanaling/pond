@@ -101,7 +101,7 @@ class PondItem extends StatelessWidget {
       child: AppButton(
           color: ButtonColors.blue,
           onPressed: () => context.push(
-                "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
+                "${RouteValue.home.path}/${RouteValue.details.path}",
                 extra: pond,
               ),
           widget: Row(

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:pond_care/src/feature/pond/models/pond.dart';
 import 'package:pond_care/src/feature/pond/presentation/add_pond_screen.dart';
+import 'package:pond_care/src/feature/pond/presentation/details_screen.dart';
 
 import 'package:pond_care/src/feature/pond/presentation/history_screen.dart';
 
@@ -66,11 +67,35 @@ GoRouter buildGoRouter = GoRouter(
                   parentNavigatorKey: _homeNavigatorKey,
                   path: RouteValue.details.path,
                   builder: (context, state) {
-                    return AddPondScreen(
+                    return DetailsScreen(
+                      pond: state.extra! as Pond,
                       key: UniqueKey(),
                     );
                   },
                   routes: [
+                    GoRoute(
+                      parentNavigatorKey: _homeNavigatorKey,
+                      path: RouteValue.addPond.path,
+                      builder: (context, state) {
+                        return AddPondScreen(
+                          pond: state.extra! as Pond?,
+                          key: UniqueKey(),
+                        );
+                      },
+                      routes: [
+                        GoRoute(
+                          parentNavigatorKey: _homeNavigatorKey,
+                          path: RouteValue.choose.path,
+                          builder: (context, state) {
+                            final type = state.extra! as ChooseType;
+                            return ChooseScreen(
+                              type: type,
+                              key: UniqueKey(),
+                            );
+                          },
+                        ),
+                      ],
+                    ),
                     GoRoute(
                       parentNavigatorKey: _homeNavigatorKey,
                       path: RouteValue.tasks.path,
@@ -87,28 +112,6 @@ GoRouter buildGoRouter = GoRouter(
                           path: RouteValue.history.path,
                           builder: (context, state) {
                             return HistoryScreen(
-                              key: UniqueKey(),
-                            );
-                          },
-                        ),
-                      ],
-                    ),
-                    GoRoute(
-                      parentNavigatorKey: _homeNavigatorKey,
-                      path: RouteValue.addPond.path,
-                      builder: (context, state) {
-                        return AddPondScreen(
-                          key: UniqueKey(),
-                        );
-                      },
-                      routes: [
-                        GoRoute(
-                          parentNavigatorKey: _homeNavigatorKey,
-                          path: RouteValue.choose.path,
-                          builder: (context, state) {
-                            final type = state.extra! as ChooseType;
-                            return ChooseScreen(
-                              type: type,
                               key: UniqueKey(),
                             );
                           },
