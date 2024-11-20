@@ -62,99 +62,107 @@ class _ChooseScreenState extends State<ChooseScreen> {
                 if (!isShowAll) {
                   list = widget.type == ChooseType.fish
                       ? getRecommendedFish(
-                          selectedFish, _sortedList as List<Fish>)
+                          selectedFish,
+                          _sortedList as List<Fish>,
+                        )
                       : widget.type == ChooseType.decorations
-                          ? getRecommendedDecorations(selectedFish,
-                              selectedPlants, _sortedList as List<Decorations>)
+                          ? getRecommendedDecorations(
+                              selectedFish,
+                              selectedPlants,
+                              _sortedList as List<Decorations>,
+                            )
                           : getRecommendedPlants(
-                              selectedPlants, _sortedList as List<Plant>);
+                              selectedPlants,
+                              _sortedList as List<Plant>,
+                            );
                 }
 
                 return Column(
                   children: [
                     const Gap(160),
                     Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 23),
-                        child: Stack(
-                          children: [
-                            Container(
-                              width: double.infinity,
-                              height: 38,
-                              decoration: ShapeDecoration(
-                                gradient: LinearGradient(
-                                  begin: Alignment.topCenter,
-                                  end: Alignment.bottomCenter,
-                                  colors: [
-                                    Colors.black.withOpacity(0.5),
-                                    Colors.black.withOpacity(0.39),
-                                  ],
-                                  stops: const [0.5, 1.0],
-                                ),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(19),
-                                ),
+                      padding: const EdgeInsets.symmetric(horizontal: 23),
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: double.infinity,
+                            height: 38,
+                            decoration: ShapeDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  Colors.black.withOpacity(0.5),
+                                  Colors.black.withOpacity(0.39),
+                                ],
+                                stops: const [0.5, 1.0],
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(19),
                               ),
                             ),
-                            Positioned(
-                              left: 0,
-                              child: AnimatedSwitcher(
-                                duration: Duration(milliseconds: 1000),
-                                child: SelectedOptionWidget(
-                                  onPressed: () {
-                                    setState(() {
-                                      isShowAll = !isShowAll;
-                                    });
-                                  },
-                                  isSelected: isShowAll,
-                                  width: width * 0.358,
-                                  child: Text(
-                                    'show all',
-                                    key: ValueKey<bool>(isShowAll),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: isShowAll
-                                          ? Colors.white
-                                          : Colors.white.withOpacity(0.73),
-                                      fontSize: 27,
-                                      fontFamily: 'Baby Bears',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
+                          ),
+                          Positioned(
+                            left: 0,
+                            child: AnimatedSwitcher(
+                              duration: Duration(milliseconds: 1000),
+                              child: SelectedOptionWidget(
+                                onPressed: () {
+                                  setState(() {
+                                    isShowAll = !isShowAll;
+                                  });
+                                },
+                                isSelected: isShowAll,
+                                width: width * 0.358,
+                                child: Text(
+                                  'show all',
+                                  key: ValueKey<bool>(isShowAll),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: isShowAll
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.73),
+                                    fontSize: 27,
+                                    fontFamily: 'Baby Bears',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
                                   ),
                                 ),
                               ),
                             ),
-                            Positioned(
-                              right: 0,
-                              child: AnimatedSwitcher(
-                                duration: Duration(milliseconds: 1000),
-                                child: SelectedOptionWidget(
-                                  onPressed: () {
-                                    setState(() {
-                                      isShowAll = !isShowAll;
-                                    });
-                                  },
-                                  isSelected: !isShowAll,
-                                  width: width * 0.555,
-                                  child: Text(
-                                    'show recommended',
-                                    key: ValueKey<bool>(!isShowAll),
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                      color: !isShowAll
-                                          ? Colors.white
-                                          : Colors.white.withOpacity(0.73),
-                                      fontSize: 27,
-                                      fontFamily: 'Baby Bears',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
-                                    ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            child: AnimatedSwitcher(
+                              duration: Duration(milliseconds: 1000),
+                              child: SelectedOptionWidget(
+                                onPressed: () {
+                                  setState(() {
+                                    isShowAll = !isShowAll;
+                                  });
+                                },
+                                isSelected: !isShowAll,
+                                width: width * 0.555,
+                                child: Text(
+                                  'show recommended',
+                                  key: ValueKey<bool>(!isShowAll),
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: !isShowAll
+                                        ? Colors.white
+                                        : Colors.white.withOpacity(0.73),
+                                    fontSize: 27,
+                                    fontFamily: 'Baby Bears',
+                                    fontWeight: FontWeight.w400,
+                                    height: 0,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        )),
+                          ),
+                        ],
+                      ),
+                    ),
                     Gap(20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 22),
@@ -187,7 +195,8 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                               ChooseType.fish &&
                                           item is Fish) {
                                         if (selectedFish.any(
-                                            (fish) => fish.id == item.id)) {
+                                          (fish) => fish.id == item.id,
+                                        )) {
                                           selectedFish.removeWhere(
                                             (fish) => fish.id == item.id,
                                           );
@@ -198,7 +207,8 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                               ChooseType.plants &&
                                           item is Plant) {
                                         if (selectedPlants.any(
-                                            (plant) => plant.id == item.id)) {
+                                          (plant) => plant.id == item.id,
+                                        )) {
                                           selectedPlants.removeWhere(
                                             (plant) => plant.id == item.id,
                                           );
@@ -235,7 +245,8 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                               ChooseType.fish &&
                                           item is Fish) {
                                         if (selectedFish.any(
-                                            (fish) => fish.id == item.id)) {
+                                          (fish) => fish.id == item.id,
+                                        )) {
                                           selectedFish.removeWhere(
                                             (fish) => fish.id == item.id,
                                           );
@@ -246,7 +257,8 @@ class _ChooseScreenState extends State<ChooseScreen> {
                                               ChooseType.plants &&
                                           item is Plant) {
                                         if (selectedPlants.any(
-                                            (plant) => plant.id == item.id)) {
+                                          (plant) => plant.id == item.id,
+                                        )) {
                                           selectedPlants.removeWhere(
                                             (plant) => plant.id == item.id,
                                           );
@@ -303,6 +315,223 @@ class ElementWidget extends StatelessWidget {
     required this.isSelected,
     required this.onSelectionChange,
   });
+  Future<dynamic> showDialog(
+    BuildContext context,
+  ) {
+    final type = element is Decorations
+        ? ChooseType.decorations
+        : element is Plant
+            ? ChooseType.plants
+            : ChooseType.fish;
+    if (type == ChooseType.decorations) {
+      final Decorations el = element as Decorations;
+      return showAdaptiveDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: AppButton(
+                color: ButtonColors.pink,
+                widget: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        titleAlert(el.name),
+                        const Gap(8),
+                        AppIcon(asset: el.imageUrl ?? ''),
+                        const Gap(8),
+                        alertText('Material: ${el.material}'),
+                        alertText('Size: ${el.size}'),
+                        alertText(
+                          'Safe for fish: ${el.safeForFish ? 'Yes' : 'No'}',
+                        ),
+                        alertText(
+                          'Pollutant source: ${el.pollutantSource ? 'Yes' : 'No'}',
+                        ),
+                        alertText(
+                          'Blocks swimming: ${el.blocksSwimming ? 'Yes' : 'No'}',
+                        ),
+                        alertText(
+                          'Supports fish hiding: ${el.supportsFishHiding ? 'Yes' : 'No'}',
+                        ),
+                        const Gap(16),
+                        RowButtons(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } else if (type == ChooseType.fish) {
+      final Fish el = element as Fish;
+      return showAdaptiveDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+           
+              child: AppButton(
+                color: ButtonColors.blue,
+                widget:SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        titleAlert(el.name),
+                        const Gap(8),
+                        AppIcon(asset: el.imageUrl ?? ''),
+                        const Gap(8),
+                        alertText('Size: ${el.size}'),
+                        alertText('Min. oxygen level: ${el.minOxygenLevel}'),
+                        alertText('Max. oxygen level: ${el.maxOxygenLevel}'),
+                        alertText('Min. temperature: ${el.minTemperature}'),
+                        alertText('Max. temperature: ${el.maxTemperature}'),
+                        alertText('Aggression: ${el.aggressive ? 'Yes' : 'No'}'),
+                        alertText(
+                          "Recommended fish: ${el.recommendedFish.join(', ')}",
+                        ),
+                        const Gap(16),
+                        RowButtons(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    } else {
+      final Plant el = element as Plant;
+      return showAdaptiveDialog(
+        context: context,
+        builder: (context) {
+          return Dialog(
+            backgroundColor: Colors.transparent,
+            insetPadding:
+                const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.6,
+              child: AppButton(
+                color: ButtonColors.green,
+                widget: SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(16),
+                    child: Column(
+                      children: [
+                        titleAlert(el.name),
+                        const Gap(8),
+                        AppIcon(asset: el.imageUrl ?? ''),
+                        const Gap(8),
+                        alertText('Size: ${el.size}'),
+                        alertText('Light requirement: ${el.lightRequirement}'),
+                        alertText('Growth rate: ${el.growthRate}'),
+                        alertText('Min. temperature: ${el.minTemperature}'),
+                        alertText('Max. temperature: ${el.maxTemperature}'),
+                        const Gap(16),
+                        RowButtons(context),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  Text titleAlert(String text) {
+    return Text(
+      text,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 23,
+        fontFamily: 'Araside',
+        fontWeight: FontWeight.w400,
+        height: 0,
+      ),
+    );
+  }
+
+  Text alertText(String text) {
+    return Text(
+      text,
+      style: TextStyle(
+        color: Colors.white.withOpacity(0.73),
+        fontSize: 27,
+        fontFamily: 'Baby Bears',
+        fontWeight: FontWeight.w400,
+        height: 0,
+      ),
+    );
+  }
+
+  Row RowButtons(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        AppButton(
+          width: MediaQuery.of(context).size.width * 0.25,
+          color: ButtonColors.red,
+          onPressed: () => Navigator.of(context).pop(),
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: const Text(
+              'Close',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontFamily: 'Araside',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
+          ),
+        ),
+        const Gap(16),
+        AppButton(
+          width: MediaQuery.of(context).size.width * 0.4,
+          color: ButtonColors.lightBlue,
+          onPressed: () {
+            onSelectionChange();
+            Navigator.of(context).pop();
+          },
+          widget: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Text(
+              !isSelected ? 'Select' : 'Unselect',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontFamily: 'Araside',
+                fontWeight: FontWeight.w400,
+                height: 0,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -334,7 +563,7 @@ class ElementWidget extends StatelessWidget {
               : type == ChooseType.fish
                   ? ButtonColors.blue
                   : ButtonColors.green,
-          onPressed: onSelectionChange,
+          onPressed: () => showDialog(context),
           radius: 17,
           width: 142,
           widget: Padding(
@@ -388,7 +617,9 @@ class ElementWidget extends StatelessWidget {
                       ),
                       shape: RoundedRectangleBorder(
                         side: const BorderSide(
-                            width: 0.50, color: Color(0xFF999999)),
+                          width: 0.50,
+                          color: Color(0xFF999999),
+                        ),
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
@@ -427,12 +658,13 @@ class SelectedOptionWidget extends StatelessWidget {
   final bool isSelected;
   final double width;
   final VoidCallback? onPressed;
-  const SelectedOptionWidget(
-      {super.key,
-      required this.child,
-      required this.isSelected,
-      required this.width,
-      required this.onPressed});
+  const SelectedOptionWidget({
+    super.key,
+    required this.child,
+    required this.isSelected,
+    required this.width,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +685,7 @@ class SelectedOptionWidget extends StatelessWidget {
                       Color(0xFF57ACFF),
                       Color(0xFF2168D0),
                       Color(0xFF3088F6),
-                      Color(0xFF084CB0)
+                      Color(0xFF084CB0),
                     ],
                     stops: [0.005, 0.15, 0.95, 1.0],
                   ),
@@ -491,7 +723,7 @@ bool checkFishCompatibilityWith(Fish newFish, List<Fish> fish) {
         !f.recommendedFish.contains(newFish.id)) {
       return false;
     }
-    if (newFish.aggressive && f.size != "large") {
+    if (newFish.aggressive && f.size != 'large') {
       return false; // Агрессивная рыба несовместима с мелкими рыбами
     }
   }
@@ -500,7 +732,9 @@ bool checkFishCompatibilityWith(Fish newFish, List<Fish> fish) {
 
 /// Метод для получения рекомендованных растений для текущего состояния пруда
 List<Plant> getRecommendedPlants(
-    List<Plant> selectedPlants, List<Plant> allPlants) {
+  List<Plant> selectedPlants,
+  List<Plant> allPlants,
+) {
   return allPlants.where((plant) {
     for (final selected in selectedPlants) {
       if (plant.lightRequirement == selected.lightRequirement &&
