@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,20 +42,34 @@ class DetailsScreen extends StatelessWidget {
                                   const EdgeInsets.symmetric(horizontal: 11),
                               child: Stack(
                                 children: [
-                                  AppButton(
-                                    color: ButtonColors.green,
-                                    radius: 17,
-                                    widget: Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: AppIcon(
-                                        asset:
-                                            IconProvider.photo.buildImageUrl(),
-                                        width:
-                                            MediaQuery.of(context).size.width *
+                                  pond.photoUrl == null
+                                      ? AppButton(
+                                          color: ButtonColors.green,
+                                          radius: 17,
+                                          widget: Padding(
+                                            padding: const EdgeInsets.all(30.0),
+                                            child: AppIcon(
+                                              asset: IconProvider.photo
+                                                  .buildImageUrl(),
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.25,
+                                            ),
+                                          ),
+                                        )
+                                      : ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(17),
+                                          child: Image.file(
+                                            File(pond.photoUrl!),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
                                                 0.25,
-                                      ),
-                                    ),
-                                  ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                        ),
                                 ],
                               ),
                             ),
@@ -78,7 +94,8 @@ class DetailsScreen extends StatelessWidget {
                                     ),
                                   ),
                                   SizedBox(
-                                    width: MediaQuery.of(context).size.width *0.45,
+                                    width: MediaQuery.of(context).size.width *
+                                        0.45,
                                     child: FittedBox(
                                       fit: BoxFit.cover,
                                       child: Text(
@@ -329,7 +346,8 @@ class DetailsScreen extends StatelessWidget {
                               Gap(16),
                               AppButton(
                                 color: ButtonColors.red,
-                                onPressed: () => showDialog(context, pond: pond),
+                                onPressed: () =>
+                                    showDialog(context, pond: pond),
                                 widget: Padding(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 11, horizontal: 16),
@@ -365,10 +383,7 @@ class DetailsScreen extends StatelessWidget {
     );
   }
 
-  Future<dynamic> showDialog(
-    BuildContext context,
-    {required Pond pond}
-  ) {
+  Future<dynamic> showDialog(BuildContext context, {required Pond pond}) {
     return showAdaptiveDialog(
       context: context,
       builder: (context) {

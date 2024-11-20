@@ -344,12 +344,12 @@ class Pond {
 
     for (final f in fish) {
       groundPreferences[f.groundPreference] =
-          groundPreferences[f.groundPreference]! + 1;
+          groundPreferences[f.groundPreference]?? 0 + 1;
     }
 
     for (final p in plants) {
       groundPreferences[p.groundPreference] =
-          groundPreferences[p.groundPreference]! + 1;
+          groundPreferences[p.groundPreference]?? 0 + 1;
     }
 
     return groundPreferences.entries

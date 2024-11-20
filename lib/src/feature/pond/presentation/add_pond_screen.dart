@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gap/gap.dart';
@@ -111,6 +112,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
 
     return _volumeController.text.isNotEmpty ? warnings : null;
   }
+
+  bool isTextError = false;
+  bool isValueError = false;
+  bool isFishError = false;
 
   @override
   Widget build(BuildContext context) {
@@ -331,6 +336,39 @@ class _AddPondScreenState extends State<AddPondScreen> {
               padding: const EdgeInsets.only(top: 48),
               child: AppButton(
                 onPressed: () {
+                  if (_nameController.text.isEmpty) {
+                    setState(() {
+                      isTextError = true;
+                    });
+                  } else {
+                    setState(() {
+                      isTextError = false;
+                    });
+                  }
+
+                  if (_volumeController.text.isEmpty) {
+                    setState(() {
+                      isValueError = true;
+                    });
+                  } else {
+                    setState(() {
+                      isValueError = false;
+                    });
+                  }
+                  if (selectedFish.isEmpty) {
+                    setState(() {
+                      isFishError = true;
+                    });
+                  } else {
+                    setState(() {
+                      isFishError = false;
+                    });
+                  }
+
+                  if (isTextError || isValueError || isFishError) {
+                    return;
+                  }
+
                   if (widget.pond != null) {
                     context.read<PondBloc>().add(
                           UpdatePond(
@@ -391,6 +429,20 @@ class _AddPondScreenState extends State<AddPondScreen> {
                 ),
               ),
             ),
+            const Gap(24),
+            if (isTextError)
+              Text("Pond Name can't be empty",
+                  style: TextStyle(fontFamily: 'Baby Bears', color: CupertinoColors.systemRed)),
+                  const Gap(8),
+                  
+              if (isValueError)
+              Text("Pond Volume can't be empty",
+                  style: TextStyle(fontFamily: 'Baby Bears', color: CupertinoColors.systemRed)),
+            const Gap(8),
+            if (isFishError)
+              Text("You must choose at least one fish",
+                  style: TextStyle(fontFamily: 'Baby Bears', color: CupertinoColors.systemRed))
+
           ],
         ),
       ),

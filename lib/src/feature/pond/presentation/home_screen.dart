@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -110,17 +112,25 @@ class PondItem extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 11),
                 child: Stack(
                   children: [
-                    AppButton(
-                      color: ButtonColors.green,
-                      radius: 17,
-                      widget: Padding(
-                        padding: const EdgeInsets.all(30.0),
-                        child: AppIcon(
-                          asset: IconProvider.photo.buildImageUrl(),
-                          width: 59.14,
+                    pond.photoUrl == null
+                        ? AppButton(
+                            color: ButtonColors.green,
+                            radius: 17,
+                            widget: Padding(
+                              padding: const EdgeInsets.all(30.0),
+                              child: AppIcon(
+                                asset: IconProvider.photo.buildImageUrl(),
+                                width: 59.14,
+                              ),
+                            ))
+                        : ClipRRect(
+                            borderRadius: BorderRadius.circular(17),
+                          child: Image.file(
+                              File(pond.photoUrl!),
+                              width: MediaQuery.of(context).size.width * 0.25,
+                              fit: BoxFit.cover,
+                            ),
                         ),
-                      ),
-                    ),
                   ],
                 ),
               ),
