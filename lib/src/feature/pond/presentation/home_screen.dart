@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
       children: [
         SingleChildScrollView(
           child: Padding(
-            padding: const EdgeInsets.only(top: 139),
+            padding:  EdgeInsets.only(top: 139+ MediaQuery.of(context).padding.top),
             child: BlocBuilder<PondBloc, PondState>(
               builder: (context, state) {
                 if (state is PondLoaded) {

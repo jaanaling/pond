@@ -142,13 +142,16 @@ class _AddPondScreenState extends State<AddPondScreen> {
                                     onPressed: _pickImage,
                                     color: ButtonColors.green,
                                     radius: 17,
-                                    widget: Padding(
-                                      padding: const EdgeInsets.all(30.0),
-                                      child: AppIcon(
-                                        asset:
-                                            IconProvider.photo.buildImageUrl(),
-                                        width: 66,
-                                        height: 58,
+                                    widget: SizedBox(
+                                      width: 130,
+                                      height: 130,
+                                      child: Center(
+                                        child: AppIcon(
+                                          asset: IconProvider.photo
+                                              .buildImageUrl(),
+                                          width: 66,
+                                          height: 58,
+                                        ),
                                       ),
                                     ),
                                   )
@@ -157,8 +160,8 @@ class _AddPondScreenState extends State<AddPondScreen> {
                                         Radius.circular(17)),
                                     child: Image.file(
                                       File(_image!),
-                                      width: 100,
-                                      height: 100,
+                                      width: 130,
+                                      height: 130,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -519,16 +522,21 @@ class _AddPondScreenState extends State<AddPondScreen> {
                 child: AppButton(
                   onPressed: () async {
                     final prefs = await SharedPreferences.getInstance();
-                    prefs.setBool('recommendationScreen', true);
+                    prefs.setBool(
+                        widget.pond == null ? 'createScreen' : 'editScreen',
+                        true);
 
                     setState(() {
-                      isRecommendationScreenLoaded = true;
+                      if (widget.pond == null) {
+                        isCreateScreenLoaded = true;
+                      } else {
+                        isEditScreenLoaded = true;
+                      }
                     });
                   },
                   color: ButtonColors.green,
                   widget: Padding(
-                    padding:
-                    EdgeInsets.symmetric(vertical: 20, horizontal: 54),
+                    padding: EdgeInsets.symmetric(vertical: 20, horizontal: 54),
                     child: Text(
                       'Got It!',
                       style: TextStyle(

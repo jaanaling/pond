@@ -16,7 +16,7 @@ class HistoryScreen extends StatelessWidget {
         SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 13),
           child: Padding(
-            padding: const EdgeInsets.only(top: 139),
+            padding: EdgeInsets.only(top: 139 + MediaQuery.of(context).padding.top),
             child: SafeArea(
               child: BlocBuilder<PondBloc, PondState>(
                 builder: (context, state) {

@@ -44,7 +44,6 @@ class AppTextField extends StatelessWidget {
             fontSize: 26,
             fontFamily: 'Araside',
             fontWeight: FontWeight.w400,
-            height: 0,
             shadows: [
               Shadow(
                   // bottomLeft
