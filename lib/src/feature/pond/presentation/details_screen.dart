@@ -40,7 +40,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 13),
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 139),
+                      padding: EdgeInsets.only(top: 139+ MediaQuery.of(context).padding.top),
                       child: SafeArea(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

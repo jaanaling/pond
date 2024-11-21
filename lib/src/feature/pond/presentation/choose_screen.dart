@@ -79,7 +79,7 @@ class _ChooseScreenState extends State<ChooseScreen> {
 
                 return Column(
                   children: [
-                    const Gap(160),
+                    Gap(160+ MediaQuery.of(context).padding.top),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 23),
                       child: Stack(
@@ -777,6 +777,9 @@ List<Decorations> getRecommendedDecorations(
     if (selectedPlants.isNotEmpty && decoration.pollutantSource) {
       return false;
     }
+
+    if(!decoration.interactive)
+    {return false;}
 
     return true;
   }).toList();
