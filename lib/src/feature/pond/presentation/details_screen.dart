@@ -40,369 +40,369 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   SingleChildScrollView(
                     padding: const EdgeInsets.symmetric(horizontal: 13),
                     child: Padding(
-                      padding: EdgeInsets.only(top: 139+ MediaQuery.of(context).padding.top),
-                      child: SafeArea(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                Padding(
+                      padding: EdgeInsets.only(top: 114+ MediaQuery.of(context).padding.top + 26),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 11,
+                                ),
+                                child: pond.photoUrl == null
+                                    ? AppButton(
+                                        color: ButtonColors.green,
+                                        radius: 17,
+                                        widget: SizedBox(
+                                          width: 125,
+                                          height: 117,
+                                          child: Center(
+                                            child: AppIcon(
+                                              asset: IconProvider.photo
+                                                  .buildImageUrl(),
+                                              width: 66,
+                                              fit: BoxFit.fitWidth,
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : ClipRRect(
+                                        borderRadius:
+                                            BorderRadius.circular(17),
+                                        child: Image.file(
+                                          File(pond.photoUrl!),
+                                          width: 125,
+                                          height: 117,
+                                          fit: BoxFit.cover,
+                                        ),
+                                      ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 11),
+                                child: Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.start,
+                                  children: [
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width -
+                                              194,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          pond.name,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontFamily: 'Araside',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width -
+                                              194,
+                                      child: FittedBox(
+                                        fit: BoxFit.scaleDown,
+                                        alignment: Alignment.centerLeft,
+                                        child: Text(
+                                          'Pond volume: ${pond.volume} l.',
+                                          textAlign: TextAlign.left,
+                                          style: const TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 25,
+                                            fontFamily: 'Baby Bears',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      'Active Tasks: ${pond.tasks?.length ?? 0}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontFamily: 'Baby Bears',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Overdue Tasks: ${pond.tasks?.where((task) => task.dueDate != null && task.dueDate!.isBefore(DateTime.now())).length ?? 0}',
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 25,
+                                        fontFamily: 'Baby Bears',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(16),
+                          Row(
+                            children: [
+                              AppButton(
+                                color: ButtonColors.lightBlue,
+                                widget: Padding(
                                   padding: const EdgeInsets.symmetric(
-                                    horizontal: 11,
+                                    horizontal: 12,
+                                    vertical: 8,
                                   ),
-                                  child: pond.photoUrl == null
-                                      ? AppButton(
-                                          color: ButtonColors.green,
-                                          radius: 17,
-                                          widget: SizedBox(
-                                            width: 125,
-                                            height: 117,
-                                            child: Center(
-                                              child: AppIcon(
-                                                asset: IconProvider.photo
-                                                    .buildImageUrl(),
-                                                width: 66,
-                                                fit: BoxFit.fitWidth,
-                                              ),
-                                            ),
-                                          ),
-                                        )
-                                      : ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(17),
-                                          child: Image.file(
-                                            File(pond.photoUrl!),
-                                            width: 125,
-                                            height: 117,
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 11),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                194,
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            pond.name,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25,
-                                              fontFamily: 'Araside',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width -
-                                                194,
-                                        child: FittedBox(
-                                          fit: BoxFit.scaleDown,
-                                          alignment: Alignment.centerLeft,
-                                          child: Text(
-                                            'Pond volume: ${pond.volume} l.',
-                                            textAlign: TextAlign.left,
-                                            style: const TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 25,
-                                              fontFamily: 'Baby Bears',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        'Active Tasks: ${pond.tasks?.length ?? 0}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontFamily: 'Baby Bears',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Overdue Tasks: ${pond.tasks?.where((task) => task.dueDate != null && task.dueDate!.isBefore(DateTime.now())).length ?? 0}',
-                                        style: const TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 25,
-                                          fontFamily: 'Baby Bears',
-                                          fontWeight: FontWeight.w400,
-                                          height: 0,
-                                        ),
-                                      ),
-                                    ],
+                                  child: Image.asset(
+                                    IconProvider.fish.buildImageUrl(),
+                                    width: 28,
+                                    height: 28,
                                   ),
                                 ),
-                              ],
-                            ),
-                            const Gap(16),
-                            Row(
+                              ),
+                              const Gap(16),
+                              Text(
+                                '${pond.fish.length.toString()} fish',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'Baby Bears',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(16),
+                          Row(
+                            children: [
+                              AppButton(
+                                color: ButtonColors.pink,
+                                widget: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  child: Image.asset(
+                                    IconProvider.decor.buildImageUrl(),
+                                    width: 28,
+                                    height: 28,
+                                  ),
+                                ),
+                              ),
+                              const Gap(16),
+                              Text(
+                                pond.decorations.length.toString() +
+                                    ' decorations',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'Baby Bears',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(16),
+                          Row(
+                            children: [
+                              const AppButton(
+                                color: ButtonColors.green,
+                                widget: Padding(
+                                  padding: EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                    vertical: 8,
+                                  ),
+                                  child: Icon(
+                                    Icons.grass,
+                                    size: 28,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                              const Gap(16),
+                              Text(
+                                pond.plants.length.toString() + ' plants',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 25,
+                                  fontFamily: 'Baby Bears',
+                                  fontWeight: FontWeight.w400,
+                                  height: 0,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const Gap(16),
+                          ListView.separated(
+                            itemCount:
+                                pond.getRecommendations().entries.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            padding: EdgeInsets.zero,
+                            separatorBuilder: (context, index) =>
+                                const Gap(16),
+                            itemBuilder: (context, index) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                AppButton(
-                                  color: ButtonColors.lightBlue,
-                                  widget: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    child: Image.asset(
-                                      IconProvider.fish.buildImageUrl(),
-                                      width: 28,
-                                      height: 28,
-                                    ),
-                                  ),
+                                Image.asset(
+                                  IconProvider.alert.buildImageUrl(),
+                                  width: 50,
+                                  height: 50,
                                 ),
                                 const Gap(16),
-                                Text(
-                                  '${pond.fish.length.toString()} fish',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontFamily: 'Baby Bears',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Gap(16),
-                            Row(
-                              children: [
-                                AppButton(
-                                  color: ButtonColors.pink,
-                                  widget: Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    child: Image.asset(
-                                      IconProvider.decor.buildImageUrl(),
-                                      width: 28,
-                                      height: 28,
-                                    ),
-                                  ),
-                                ),
-                                const Gap(16),
-                                Text(
-                                  pond.decorations.length.toString() +
-                                      ' decorations',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontFamily: 'Baby Bears',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const Gap(16),
-                            Row(
-                              children: [
-                                const AppButton(
-                                  color: ButtonColors.green,
-                                  widget: Padding(
-                                    padding: EdgeInsets.symmetric(
-                                      horizontal: 12,
-                                      vertical: 8,
-                                    ),
-                                    child: Icon(
-                                      Icons.grass,
-                                      size: 28,
+                                Expanded(
+                                  child: Text(
+                                    pond
+                                        .getRecommendations()
+                                        .entries
+                                        .elementAt(index)
+                                        .value,
+                                    style: const TextStyle(
                                       color: Colors.white,
+                                      fontSize: 25,
+                                      fontFamily: 'Baby Bears',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
                                     ),
-                                  ),
-                                ),
-                                const Gap(16),
-                                Text(
-                                  pond.plants.length.toString() + ' plants',
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 25,
-                                    fontFamily: 'Baby Bears',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
                                   ),
                                 ),
                               ],
                             ),
-                            const Gap(16),
-                            ListView.separated(
-                              itemCount:
-                                  pond.getRecommendations().entries.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) =>
-                                  const Gap(16),
-                              itemBuilder: (context, index) => Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    IconProvider.alert.buildImageUrl(),
-                                    width: 50,
-                                    height: 50,
-                                  ),
-                                  const Gap(16),
-                                  Expanded(
-                                    child: Text(
-                                      pond
-                                          .getRecommendations()
-                                          .entries
-                                          .elementAt(index)
-                                          .value,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontFamily: 'Baby Bears',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
-                                      ),
+                          ),
+                          const Gap(16),
+                          ListView.separated(
+                            itemCount: pond.getErrors().entries.length,
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            separatorBuilder: (context, index) =>
+                                const Gap(16),
+                            padding: EdgeInsets.zero,
+                            itemBuilder: (context, index) => Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Image.asset(
+                                  IconProvider.error.buildImageUrl(),
+                                  width: 50,
+                                  height: 50,
+                                ),
+                                const Gap(16),
+                                Expanded(
+                                  child: Text(
+                                    pond
+                                        .getErrors()
+                                        .entries
+                                        .elementAt(index)
+                                        .value,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 25,
+                                      fontFamily: 'Baby Bears',
+                                      fontWeight: FontWeight.w400,
+                                      height: 0,
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                            const Gap(16),
-                            ListView.separated(
-                              itemCount: pond.getErrors().entries.length,
-                              shrinkWrap: true,
-                              physics: const NeverScrollableScrollPhysics(),
-                              separatorBuilder: (context, index) =>
-                                  const Gap(16),
-                              itemBuilder: (context, index) => Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Image.asset(
-                                    IconProvider.error.buildImageUrl(),
-                                    width: 50,
-                                    height: 50,
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                AppButton(
+                                  color: ButtonColors.green,
+                                  onPressed: () => context.push(
+                                    "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.addPond.path}",
+                                    extra: pond,
                                   ),
-                                  const Gap(16),
-                                  Expanded(
-                                    child: Text(
-                                      pond
-                                          .getErrors()
-                                          .entries
-                                          .elementAt(index)
-                                          .value,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 25,
-                                        fontFamily: 'Baby Bears',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  AppButton(
-                                    color: ButtonColors.green,
-                                    onPressed: () => context.push(
-                                      "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.addPond.path}",
-                                      extra: pond,
-                                    ),
-                                    widget: SizedBox(
-                                      width: 213,
-                                      child: Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 11,
-                                            horizontal: 16,
-                                          ),
-                                          child: Text(
-                                            'Edit Pond',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 23,
-                                              fontFamily: 'Araside',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                            ),
+                                  widget: SizedBox(
+                                    width: 213,
+                                    child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 11,
+                                          horizontal: 16,
+                                        ),
+                                        child: Text(
+                                          'Edit Pond',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23,
+                                            fontFamily: 'Araside',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  const Gap(16),
-                                  AppButton(
-                                    color: ButtonColors.blue,
-                                    onPressed: () => context.push(
-                                      "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
-                                      extra: pond,
-                                    ),
-                                    widget: SizedBox(
-                                      width: 213,
-                                      child: Center(
-                                        child: const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 11,
-                                          ),
-                                          child: Text(
-                                            'View Tasks',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 23,
-                                              fontFamily: 'Araside',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                            ),
+                                ),
+                                const Gap(16),
+                                AppButton(
+                                  color: ButtonColors.blue,
+                                  onPressed: () => context.push(
+                                    "${RouteValue.home.path}/${RouteValue.details.path}/${RouteValue.tasks.path}",
+                                    extra: pond,
+                                  ),
+                                  widget: SizedBox(
+                                    width: 213,
+                                    child: Center(
+                                      child: const Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 11,
+                                        ),
+                                        child: Text(
+                                          'View Tasks',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23,
+                                            fontFamily: 'Araside',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                  const Gap(16),
-                                  AppButton(
-                                    color: ButtonColors.red,
-                                    onPressed: () =>
-                                        showDialog(context, pond: pond),
-                                    widget: SizedBox(
-                                      width: 213,
-                                      child: Center(
-                                        child: Padding(
-                                          padding: EdgeInsets.symmetric(
-                                            vertical: 11,
-                                          ),
-                                          child: Text(
-                                            'Delete Pond',
-                                            style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 23,
-                                              fontFamily: 'Araside',
-                                              fontWeight: FontWeight.w400,
-                                              height: 0,
-                                            ),
+                                ),
+                                const Gap(16),
+                                AppButton(
+                                  color: ButtonColors.red,
+                                  onPressed: () =>
+                                      showDialog(context, pond: pond),
+                                  widget: SizedBox(
+                                    width: 213,
+                                    child: Center(
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(
+                                          vertical: 11,
+                                        ),
+                                        child: Text(
+                                          'Delete Pond',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 23,
+                                            fontFamily: 'Araside',
+                                            fontWeight: FontWeight.w400,
+                                            height: 0,
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ],
-                              ),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     ),
                   ),

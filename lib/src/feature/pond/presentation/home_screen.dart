@@ -25,13 +25,13 @@ class HomeScreen extends StatelessWidget {
       children: [
         SingleChildScrollView(
           child: Padding(
-            padding:  EdgeInsets.only(top: 139+ MediaQuery.of(context).padding.top),
+            padding:  EdgeInsets.only(top: 139),
             child: BlocBuilder<PondBloc, PondState>(
               builder: (context, state) {
                 if (state is PondLoaded) {
                   return state.pond.isEmpty
                       ? Padding(
-                          padding: const EdgeInsets.only(top: 50),
+                          padding: EdgeInsets.only(top: 50+ MediaQuery.of(context).padding.top),
                           child: Text(
                             'No Ponds Here!',
                             style: TextStyle(

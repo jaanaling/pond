@@ -11,7 +11,9 @@ class AppTextField extends StatelessWidget {
       {super.key,
       this.width = double.infinity,
       this.height,
-      required this.controller, this.textInputType = TextInputType.text, this.onChanged});
+      required this.controller,
+      this.textInputType = TextInputType.text,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +36,9 @@ class AppTextField extends StatelessWidget {
         ],
       ),
       child: CupertinoTextField(
+        onTapOutside: (event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
         controller: controller,
         onChanged: onChanged,
         keyboardType: textInputType,
@@ -64,11 +69,20 @@ class AppTextField extends StatelessWidget {
             ]),
         decoration: BoxDecoration(
           gradient: const LinearGradient(
-            begin: Alignment(0.00, -1.00),
-            end: Alignment(0, 1),
-            colors: [Color(0xFF88A2D7), Color(0xFFABC7EC), Color(0xFF9DBFE6), Color(0xFF88A2D7),],
-              stops: [0.0005, 0.15, 0.995, 1.0]
-          ),
+              begin: Alignment(0.00, -1.00),
+              end: Alignment(0, 1),
+              colors: [
+                Color(0xFF88A2D7),
+                Color(0xFFABC7EC),
+                Color(0xFF9DBFE6),
+                Color(0xFF88A2D7),
+              ],
+              stops: [
+                0.0005,
+                0.15,
+                0.995,
+                1.0
+              ]),
           borderRadius: BorderRadius.circular(39),
         ),
       ),
