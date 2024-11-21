@@ -52,6 +52,7 @@ class _AddPondScreenState extends State<AddPondScreen> {
       selectedFish = widget.pond!.fish;
       selectedPlants = widget.pond!.plants;
       selectedDecorations = widget.pond!.decorations;
+      isLowPond = checkElementCountsBySize() != null ? true : false;
     }
   }
 
@@ -117,6 +118,7 @@ class _AddPondScreenState extends State<AddPondScreen> {
   bool isTextError = false;
   bool isValueError = false;
   bool isFishError = false;
+  bool isLowPond = false;
 
   @override
   Widget build(BuildContext context) {
@@ -283,16 +285,14 @@ class _AddPondScreenState extends State<AddPondScreen> {
                       );
                     }
 
-                    setState(() {
-
-                    });
+                    setState(() {});
                   },
                   height: 52,
                   width: MediaQuery.of(context).size.width * 0.39,
                   textInputType: TextInputType.number,
                 ),
-                if (checkElementCountsBySize() != null) const Gap(24),
-                if (checkElementCountsBySize() != null)
+                if (isLowPond) const Gap(24),
+                if (isLowPond)
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -360,6 +360,16 @@ class _AddPondScreenState extends State<AddPondScreen> {
                         });
                       }
 
+                      if (checkElementCountsBySize() != null) {
+                        setState(() {
+                          isLowPond = true;
+                        });
+                      } else {
+                        setState(() {
+                          isLowPond = false;
+                        });
+                      }
+
                       if (_volumeController.text.isEmpty) {
                         setState(() {
                           isValueError = true;
@@ -379,7 +389,7 @@ class _AddPondScreenState extends State<AddPondScreen> {
                         });
                       }
 
-                      if (isTextError || isValueError || isFishError) {
+                      if (isTextError || isValueError || isFishError || isLowPond) {
                         return;
                       }
 
