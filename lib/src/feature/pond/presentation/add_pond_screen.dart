@@ -25,6 +25,8 @@ import '../models/plant.dart';
 List<Fish> selectedFish = [];
 List<Decorations> selectedDecorations = [];
 List<Plant> selectedPlants = [];
+final _nameController = TextEditingController();
+final _volumeController = TextEditingController();
 
 class AddPondScreen extends StatefulWidget {
   final Pond? pond;
@@ -35,8 +37,6 @@ class AddPondScreen extends StatefulWidget {
 }
 
 class _AddPondScreenState extends State<AddPondScreen> {
-  final _nameController = TextEditingController();
-  final _volumeController = TextEditingController();
   late bool isFirstTime;
   String? _image;
 
@@ -282,6 +282,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
                         TextPosition(offset: newText.length),
                       );
                     }
+
+                    setState(() {
+
+                    });
                   },
                   height: 52,
                   width: MediaQuery.of(context).size.width * 0.39,
@@ -420,6 +424,8 @@ class _AddPondScreenState extends State<AddPondScreen> {
                       selectedFish.clear();
                       selectedDecorations.clear();
                       selectedPlants.clear();
+                      _nameController.clear();
+                      _volumeController.clear();
 
                       context.pop();
                     },
