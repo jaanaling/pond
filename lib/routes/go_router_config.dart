@@ -79,7 +79,6 @@ GoRouter buildGoRouter = GoRouter(
                       builder: (context, state) {
                         return AddPondScreen(
                           pond: state.extra! as Pond?,
-                          key: UniqueKey(),
                         );
                       },
                       routes: [

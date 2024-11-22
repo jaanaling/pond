@@ -293,24 +293,25 @@ class _AddPondScreenState extends State<AddPondScreen> {
                 ),
                 if (isLowPond) const Gap(24),
                 if (isLowPond)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 16),
-                    child: Row(
-                      children: [
-                        Image.asset(
-                          IconProvider.error.buildImageUrl(),
-                          width: 62,
-                          height: 62,
-                        ),
-                        const Gap(4),
-                        Expanded(
-                            child: Text(
-                          checkElementCountsBySize()!,
-                          style: TextStyle(fontFamily: 'Baby Bears'),
-                        )),
-                      ],
+                  if (checkElementCountsBySize() != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Row(
+                        children: [
+                          Image.asset(
+                            IconProvider.error.buildImageUrl(),
+                            width: 62,
+                            height: 62,
+                          ),
+                          const Gap(4),
+                          Expanded(
+                              child: Text(
+                            checkElementCountsBySize()!,
+                            style: TextStyle(fontFamily: 'Baby Bears'),
+                          )),
+                        ],
+                      ),
                     ),
-                  ),
                 const Gap(24),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -389,7 +390,10 @@ class _AddPondScreenState extends State<AddPondScreen> {
                         });
                       }
 
-                      if (isTextError || isValueError || isFishError || isLowPond) {
+                      if (isTextError ||
+                          isValueError ||
+                          isFishError ||
+                          isLowPond) {
                         return;
                       }
 
@@ -480,18 +484,20 @@ class _AddPondScreenState extends State<AddPondScreen> {
         ),
         if (widget.pond != null ? !isEditScreenLoaded : !isCreateScreenLoaded)
           Stack(alignment: Alignment.topCenter, children: [
-            Positioned.fill(
-              child: Container(
-                color: Colors.black.withOpacity(0.6799999833106995),
-              ),
+            Container(
+              color: Colors.black.withOpacity(0.7799999833106995),
+              width: double.infinity,
+              height: MediaQuery.of(context).size.height,
             ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 22),
                 child: Column(
                   children: [
-                    Gap(MediaQuery.of(context).size.height * 0.147 -
-                        MediaQuery.of(context).padding.top),
+                    Gap(
+                      MediaQuery.of(context).size.height * 0.147 -
+                          MediaQuery.of(context).padding.top,
+                    ),
                     Text(
                       widget.pond == null
                           ? 'WELCOME TO YOUR POND CREATION!'

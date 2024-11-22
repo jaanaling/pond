@@ -416,10 +416,10 @@ class _DetailsScreenState extends State<DetailsScreen> {
                 Stack(
                   alignment: Alignment.topCenter,
                   children: [
-                    Positioned.fill(
-                      child: Container(
-                        color: Colors.black.withOpacity(0.6799999833106995),
-                      ),
+                    Container(
+                      color: Colors.black.withOpacity(0.7799999833106995),
+                      width: double.infinity,
+                      height: MediaQuery.of(context).size.height,
                     ),
                     SafeArea(
                       child: Padding(
