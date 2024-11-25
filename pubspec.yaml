@@ -1,7 +1,7 @@
 name: pond_care
 description: "A new Flutter project."
 publish_to: 'none'
-version: 1.0.0
+version: 1.1.0
 
 environment:
   sdk: '>=3.4.0 <4.0.0'
@@ -22,7 +22,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   image_picker: ^1.1.2
-  advertising_id: ^2.7.1
+  core_logic:
+    git:
+      url: https://github.com/Vennylost/core_logic.git
+      ref: ff59917a7ca9c0648e0f5bc3a8ac0245f005c9d3
 
 dev_dependencies:
   flutter_test:
