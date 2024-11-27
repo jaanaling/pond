@@ -8,6 +8,9 @@ import 'package:pond_care/src/core/dependency_injection.dart';
 import 'package:pond_care/src/feature/app/presentation/app_root.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:core_amplitude/core_amplitude.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
 
 late bool isCreateScreenLoaded;
 late bool isEditScreenLoaded;
@@ -17,7 +20,10 @@ late bool isRecommendationScreenLoaded;
 void main() async {
   runZonedGuarded(() async {
     WidgetsFlutterBinding.ensureInitialized();
-    // ... your code here
+
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
 
     FlutterError.onError = (FlutterErrorDetails details) {
       _handleFlutterError(details);
@@ -31,6 +37,8 @@ void main() async {
       appId: 'com.pioneerbloom.pondcare',
       iosAppId: '6738591800',
       initialRoute: RouteValue.home.path,
+      facebookClientToken: '02c9a03dd3a2f6b0399f201d45ab13bc',
+      facebookAppId: '590554303357492',
     );
 
     final prefs = await SharedPreferences.getInstance();
