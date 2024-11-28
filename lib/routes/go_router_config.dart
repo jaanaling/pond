@@ -17,6 +17,7 @@ import 'package:pond_care/routes/root_navigation_screen.dart';
 import 'package:pond_care/routes/route_value.dart';
 
 import '../src/feature/pond/models/pond.dart';
+import '../src/feature/pond/presentation/privacy_screen.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _homeNavigatorKey = GlobalKey<NavigatorState>();
@@ -155,6 +156,14 @@ GoRouter buildGoRouter = GoRouter(
           ),
         );
       },
+    ),
+    GoRoute(
+      path: '/privacy',
+      pageBuilder: (context, state) => NoTransitionPage(
+        child: PrivicyScreen(
+          key: UniqueKey(),
+        ),
+      ),
     ),
   ],
 );

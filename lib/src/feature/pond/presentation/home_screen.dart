@@ -60,6 +60,7 @@ class HomeScreen extends StatelessWidget {
         ),
         AppBarWidget(
           title: 'All Ponds',
+          hasPrivacy: true,
         ),
         Positioned(
           bottom: 0,

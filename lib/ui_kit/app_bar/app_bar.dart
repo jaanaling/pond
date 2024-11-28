@@ -9,7 +9,12 @@ import 'package:pond_care/ui_kit/app_button/app_button.dart';
 class AppBarWidget extends StatelessWidget {
   final String title;
   final bool hasBackIcon;
-  const AppBarWidget({super.key, required this.title, this.hasBackIcon = false});
+  final bool hasPrivacy;
+  const AppBarWidget(
+      {super.key,
+      required this.title,
+      this.hasBackIcon = false,
+      this.hasPrivacy = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +24,10 @@ class AppBarWidget extends StatelessWidget {
         AppIcon(
           asset: IconProvider.appBar.buildImageUrl(),
           width: MediaQuery.of(context).size.width,
-          height: 114+MediaQuery.of(context).padding.top,
+          height: 114 + MediaQuery.of(context).padding.top,
           fit: BoxFit.fill,
         ),
         if (hasBackIcon)
-
           Positioned(
             top: 6 + MediaQuery.of(context).padding.top,
             left: 10,
@@ -39,7 +43,11 @@ class AppBarWidget extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      AppIcon(asset: IconProvider.back.buildImageUrl(), width: 28.98, height: 20.9,),
+                      AppIcon(
+                        asset: IconProvider.back.buildImageUrl(),
+                        width: 28.98,
+                        height: 20.9,
+                      ),
                       const Gap(1),
                       const Text(
                         'back',
@@ -89,6 +97,41 @@ class AppBarWidget extends StatelessWidget {
             ],
           ),
         ),
+        if (hasBackIcon)
+          Positioned(
+            top: 6 + MediaQuery.of(context).padding.top,
+            right: 10,
+            child: AppButton(
+              color: ButtonColors.lightBlue,
+              onPressed: () {
+                context.push('/privacy');
+              },
+              widget: SizedBox(
+                width: 52,
+                height: 44,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.security),
+                      const Gap(1),
+                      const Text(
+                        'privacy',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                          fontFamily: 'Araside',
+                          fontWeight: FontWeight.w400,
+                          height: 0,
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
       ],
     );
   }
