@@ -97,7 +97,7 @@ class AppBarWidget extends StatelessWidget {
             ],
           ),
         ),
-        if (hasBackIcon)
+        if (hasPrivacy)
           Positioned(
             top: 6 + MediaQuery.of(context).padding.top,
             right: 10,
@@ -113,14 +113,14 @@ class AppBarWidget extends StatelessWidget {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Icon(Icons.security),
+                      Icon(Icons.security, color: Colors.white,),
                       const Gap(1),
                       const Text(
                         'privacy',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 11,
+                          fontSize: 10,
                           fontFamily: 'Araside',
                           fontWeight: FontWeight.w400,
                           height: 0,

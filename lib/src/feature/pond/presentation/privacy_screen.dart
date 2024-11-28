@@ -30,27 +30,30 @@ class _PrivicyScreenState extends State<PrivicyScreen> {
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
-      backgroundColor: Colors.white,
-      child: SafeArea(
-        child: Column(
-          children: [
-            const AppBarWidget(
-              title: 'Privacy Policy',
-              hasBackIcon: true,
-            ),
-            Expanded(
+      backgroundColor: Color(0xFF2b7a78),
+      child: Stack(
+        children: [
+        
+          Padding(
+            padding: EdgeInsets.only(top: 114 + MediaQuery.of(context).padding.top,),
+            child: SafeArea(
+              top: false,
               child: WebViewWidget(
                 controller: _controller
                   ..loadRequest(
                     Uri.parse('https://pondcarea.com/privacy.html'),
                   )
                   ..setBackgroundColor(
-                    Colors.white,
+                    Color(0xFF2b7a78),
                   ),
               ),
             ),
-          ],
-        ),
+          ),
+          const AppBarWidget(
+            title: 'Privacy Policy',
+            hasBackIcon: true,
+          ),
+        ],
       ),
     );
   }
